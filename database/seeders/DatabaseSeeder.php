@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
         ]);
         // $this->call(DropdownsTableSeeder::class);
         // $this->call(NamesTableSeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(UnitsTableSeeder::class);
     }
 }

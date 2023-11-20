@@ -18,6 +18,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/home', App\Http\Controllers\HomeController::class);
     Route::resource('/customers', App\Http\Controllers\CustomerController::class);
     Route::resource('/suppliers', App\Http\Controllers\SupplierController::class);
+    Route::resource('/products', App\Http\Controllers\ProductController::class);
+    Route::resource('/users', App\Http\Controllers\UserController::class);
 });
 
 require __DIR__.'/auth.php';

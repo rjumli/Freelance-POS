@@ -20,6 +20,7 @@
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
+        "@chenfengyuan/vue-barcode": "^2.0.2",
         "@formkit/vue": "^1.1.0-e5c1903",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.1.2",
@@ -27,6 +28,7 @@
         "@suadelabs/vue3-multiselect": "^1.0.2",
         "bootstrap-vue-3": "^0.4.15",
         "i": "^0.3.7",
+        "jsbarcode": "^3.11.6",
         "maska": "^2.1.9",
         "npm": "^9.4.2",
         "prismjs": "^1.29.0",

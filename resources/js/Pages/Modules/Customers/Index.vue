@@ -7,7 +7,7 @@
             <!-- <b-card no-body>
                 <b-card-body style="height: calc(100vh - 284px)"> -->
             <div class=" d-flex align-items-center">
-                <h3 class="flex-grow-1 mb-n3">Customer Management</h3>
+                <h3 class="flex-grow-1 mb-n3">Customers Management</h3>
                 <div class="flex-shrink-0">
                     <div class="input-group mb-1">
                         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
@@ -32,9 +32,9 @@
                             <th style="width: 25%;">Name</th>
                             <th style="width: 17%;" class="text-center">Contact No.</th>
                             <th style="width: 17%;" class="text-center">Email</th>
-                            <th style="width: 17%;" class="text-center">Status</th>
+                            <th style="width: 10%;" class="text-center">Status</th>
                             <th style="width: 17%;" class="text-center">Created At</th>
-                            <th style="width: 7%;"></th>
+                            <th style="width: 17%;" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +50,8 @@
                             </td>
                             <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
-                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit Transportation" size="sm" class="edit-list me-1"><i class="ri-ball-pen-line"></i> </b-button>
-                                <b-button variant="soft-warning" v-b-tooltip.hover title="Update Status" size="sm" class="remove-list me-1"><i class="ri-heart-fill align-bottom"></i></b-button>
+                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list me-1 w-xs">EDIT</b-button>
+                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -107,6 +107,9 @@ export default {
         },
         openCreate(){
             this.$refs.create.show();
+        },
+        edit(data){
+            this.$refs.create.edit(data);
         }
     }
 }

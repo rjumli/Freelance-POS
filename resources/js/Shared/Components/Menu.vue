@@ -31,6 +31,12 @@
                     </Link>
                 </li>
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Products') }" href="/products">
+                        <i class='ri ri-folder-zip-fill'></i>
+                        <span data-key="t-dashboards">Product Management</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Customers') }" href="/customers">
                         <i class='ri ri-team-fill'></i>
                         <span data-key="t-dashboards">Customer Management</span>
@@ -40,6 +46,12 @@
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Suppliers') }" href="/suppliers">
                         <i class='ri ri-store-fill'></i>
                         <span data-key="t-dashboards">Supplier Management</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Users') }" href="/users">
+                        <i class='ri ri-shield-user-line'></i>
+                        <span data-key="t-dashboards">User Management</span>
                     </Link>
                 </li>
             </ul>

@@ -7,14 +7,14 @@
             <!-- <b-card no-body>
                 <b-card-body style="height: calc(100vh - 284px)"> -->
             <div class=" d-flex align-items-center">
-                <h3 class="flex-grow-1 mb-n3">Suppliers Management</h3>
+                <h3 class="flex-grow-1 mb-n3">Users Management</h3>
                 <div class="flex-shrink-0">
                     <div class="input-group mb-1">
                         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
                         <input type="text" v-model="keyword" placeholder="Search Name" class="form-control" style="width: 50%;">
                         
                         <b-button @click="openCreate()" type="button" variant="primary">
-                            <i class="ri-add-circle-fill align-bottom me-1"></i> Add Supplier
+                            <i class="ri-add-circle-fill align-bottom me-1"></i> Add User
                         </b-button>
                     </div>
                 </div>
@@ -29,22 +29,22 @@
                 <table class="table table-nowrap table-bordered align-middle mb-0">
                     <thead class="bg-primary">
                         <tr class="fs-13 text-light">
-                            <th style="width: 20%;">Name</th>
-                            <th style="width: 15%;" class="text-center">Contact Person</th>
-                            <th style="width: 15%;" class="text-center">Contact No.</th>
-                            <th style="width: 12%;" class="text-center">Email</th>
+                            <th style="width: 22%;">Name</th>
+                            <th style="width: 13%;" class="text-center">Role</th>
+                            <th style="width: 13%;" class="text-center">Username</th>
+                            <th style="width: 13%;" class="text-center">Email</th>
                             <th style="width: 10%;" class="text-center">Status</th>
                             <th style="width: 15%;" class="text-center">Created At</th>
-                            <th style="width: 13%;"  class="text-center">Action</th>
+                            <th style="width: 13%;" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(list,index) in lists" v-bind:key="index">
                             <td>
-                                <h5 class="fs-13 mb-0 text-dark">{{list.supplier.name}} - {{list.name}}</h5>
+                                <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
                             </td>
-                            <td class="text-center"> {{list.contact_person}}</td>
-                            <td class="text-center"> {{list.contact_number}}</td>
+                            <td class="text-center"> {{list.role}}</td>
+                            <td class="text-center"> {{list.username}}</td>
                             <td class="text-center"> {{list.email}}</td>
                             <td class="text-center">
                                 <b-badge v-if="list.is_active" variant="success">Active</b-badge>
@@ -61,23 +61,18 @@
                 <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
             </div>
         </b-col>
-        <!-- <input v-model="barcodeValue" /><br>
-        <vue-barcode value="Hello, World!" /> -->
     </b-row>
-  
     <Create @message="fetch()" ref="create"/>
 </template>
 <script>
-import VueBarcode from '@chenfengyuan/vue-barcode';
 import Create from './Create.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { PageHeader, Pagination, Create, VueBarcode },
+    components: { PageHeader, Pagination, Create },
     data() {
         return {
-            yourBarcodeData: '123456789',
-            title: "Customer Management",
+            title: "User Management",
             items: [{text: "View",href: "/"},{ text: "Dasboard",active: true}, ],
             keyword: '',
             lists: [],
@@ -98,7 +93,7 @@ export default {
             this.fetch();
         }, 300),
         fetch(page_url) {
-            page_url = page_url || '/suppliers';
+            page_url = page_url || '/users';
             axios.get(page_url, {
                 params: {
                     keyword: this.keyword,

@@ -33,9 +33,8 @@
                     </form>
                     <template v-if="name">
                         <hr class="text-muted"/>
-                        <div class="form-group">
-                            <label>Name:</label>
-                            <input type="text" class="form-control" v-model="name.name" readonly>
+                        <div class="form-group mt-2">
+                            <input type="text" class="form-control text-primary fw-bold" v-model="name.name" readonly>
                         </div>
                     </template>
                 </div>
@@ -45,31 +44,31 @@
                 <div class="col-md-12 mt-2">
                    <div class="form-group">
                         <label>Branch:</label>
-                        <input type="text" class="form-control" v-model="customer.name" style="text-transform: capitalize;">
+                        <input type="text" class="form-control" v-model="supplier.name" style="text-transform: capitalize;">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
                         <label>Contact Person:</label>
-                        <input type="text" class="form-control" v-model="customer.contact_person">
+                        <input type="text" class="form-control" v-model="supplier.contact_person">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
                         <label>Contact Number:</label>
-                        <input type="text" class="form-control" v-model="customer.contact_number">
+                        <input type="text" class="form-control" v-model="supplier.contact_number">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
                         <label>Email:</label>
-                        <input type="text" class="form-control" v-model="customer.email">
+                        <input type="text" class="form-control" v-model="supplier.email">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
                         <label>Address:</label>
-                        <input type="text" class="form-control" v-model="customer.address">
+                        <input type="text" class="form-control" v-model="supplier.address">
                     </div>
                 </div>
     
@@ -90,10 +89,9 @@ export default {
     data(){
         return {
             showModal: false,
-            customer: {
+            supplier: {
                 id: '',
                 name: '',
-                branch: '',
                 contact_person: '',
                 contact_number: '',
                 email: '',
@@ -103,27 +101,51 @@ export default {
             name: '',
             names: [],
             form: {},
+            status: '',
             editable: false,
         }
     },
     mounted() {
         this.isCustomDropdown();
     },
+    watch : {
+        data: {
+            deep: true,
+            handler(val = null) {
+                if(val != null && val !== ''){
+                    if(this.status == 'name'){
+                        this.name = val.data;
+                    }else{
+
+                    }
+                }
+            },
+        },
+    },
+    computed: {
+        data() {
+            return this.$page.props.flash.data;
+        },
+    },
     methods : {
         show() {
             this.showModal = true;
         },
         edit(data){
-            this.customer = data;
+            this.supplier = data;
+            this.name = this.supplier.supplier;
             this.editable = true;
             this.showModal = true;
         },
         create(){
             this.form = this.$inertia.form({
-                id: this.id,
-                name: this.customer.name,
-                contact: this.customer.contact,
-                email: this.customer.email,
+                id: this.supplier.id,
+                name: this.supplier.name,
+                contact_person: this.supplier.contact_person,
+                contact_number: this.supplier.contact_number,
+                address: this.supplier.address,
+                email: this.supplier.email,
+                supplier_id: (this.name) ? this.name.id : '',
                 editable: this.editable
             })
 
@@ -135,12 +157,16 @@ export default {
             });
         },
         hide(){
-            this.customers = {
+            this.supplier = {
                 id: '',
                 name: '',
-                contact: '',
+                contact_person: '',
+                contact_number: '',
                 email: '',
+                address: ''
             };
+            this.name = '';
+            this.status = '';
             this.$emit('message',true);
             this.showModal = false;
         }, 
@@ -148,6 +174,7 @@ export default {
             this.name = data;
         },
         newName(){
+            this.status = 'name';
             this.$refs.new.show(this.keyword);
         },
         checkSearchStr: _.debounce(function (string) {
