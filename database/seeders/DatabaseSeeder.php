@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'administrator',
             'email' => 'kradjumli@gmail.com',
             'name' => 'Ra-ouf Jumli',
-            'password' => bcrypt('123456789'),
+            'password' => bcrypt('pos2023'),
             'role' => 'Administrator',
             'avatar' => 'administrator.png',
             'is_active' => 1,
@@ -30,5 +30,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriesTableSeeder::class);
         $this->call(UnitsTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
+        $this->call(SuppliersTableSeeder::class);
+        $this->call(SupplierBranchesTableSeeder::class);
+        $this->call(CustomersTableSeeder::class);
     }
 }
