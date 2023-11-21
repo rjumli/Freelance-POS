@@ -4,8 +4,10 @@ namespace App\Http\Middleware;
 
 use App\Models\Unit;
 use App\Models\Dropdown;
+use App\Models\Customer;
 use App\Models\SupplierBranch;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use App\Http\Resources\UserResource;
@@ -32,7 +34,9 @@ class HandleInertiaRequests extends Middleware
             'categories' => Category::all(),
             'suppliers' => SupplierBranch::with('supplier')->where('is_active',1)->get(),
             'units' => Unit::all(),
-            'dropdowns' => Dropdown::all()
+            'dropdowns' => Dropdown::all(),
+            'products' => Product::all(),
+            'customers' => Customer::all()
         ]);
     }
 }

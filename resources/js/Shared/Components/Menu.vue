@@ -31,6 +31,18 @@
                     </Link>
                 </li>
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Sales') }" href="/sales">
+                        <i class='ri ri-hand-coin-fill'></i>
+                        <span data-key="t-dashboards">Sales</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Orders') }" href="/orders">
+                        <i class='ri ri-shopping-cart-fill'></i>
+                        <span data-key="t-dashboards">Purchased Order</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Products') }" href="/products">
                         <i class='ri ri-folder-zip-fill'></i>
                         <span data-key="t-dashboards">Product Management</span>

@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
             'email_verified_at' => now(),
         ]);
-        // $this->call(DropdownsTableSeeder::class);
-        // $this->call(NamesTableSeeder::class);
+        $this->call(DropdownsTableSeeder::class);
         $this->call(CategoriesTableSeeder::class);
         $this->call(UnitsTableSeeder::class);
+        $this->call(ProductsTableSeeder::class);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <Head title="Customer Management" />
+    <Head title="Order Management" />
     <!-- <PageHeader :title="title" :items="items" /> -->
 
     <b-row>
@@ -7,7 +7,7 @@
             <!-- <b-card no-body>
                 <b-card-body style="height: calc(100vh - 284px)"> -->
             <div class=" d-flex align-items-center">
-                <h3 class="flex-grow-1 mb-n3">Products Management</h3>
+                <h3 class="flex-grow-1 mb-n3">Purchased Order Management</h3>
                 <div class="flex-shrink-0">
                     <div class="input-group mb-1">
                         <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
@@ -17,7 +17,7 @@
                             <option :value="list.id" v-for="list in categories" v-bind:key="list.id">{{list.name}}</option>
                         </select>
                         <b-button @click="openCreate()" type="button" variant="primary">
-                            <i class="ri-add-circle-fill align-bottom me-1"></i> Add Product
+                            <i class="ri-add-circle-fill align-bottom me-1"></i> New Order
                         </b-button>
                     </div>
                 </div>
@@ -32,31 +32,30 @@
                 <table class="table table-nowrap table-bordered align-middle mb-0">
                     <thead class="bg-primary">
                         <tr class="fs-13 text-light">
-                            <th style="width: 10%;" class="text-center">Code</th>
-                            <th style="width: 22%;" class="text-center">Name</th>
-                            <th style="width: 15%;" class="text-center">Brand</th>
-                            <th style="width: 13%;" class="text-center">Category</th>
-                            <th style="width: 8%;" class="text-center">Stock</th>
-                            <th style="width: 7%;" class="text-center">Price</th>
-                            <th style="width: 13%;" class="text-center">Created At</th>
-                            <th style="width: 12%;" class="text-center">Action</th>
+                            <th style="width: 13%;" class="text-center">Code</th>
+                            <th style="width: 17%;" class="text-center">Supplier</th>
+                            <th style="width: 17%;" class="text-center">Products</th>
+                            <th style="width: 14%;" class="text-center">Total</th>
+                            <th style="width: 14%;" class="text-center">Status</th>
+                            <th style="width: 15%;" class="text-center">Created At</th>
+                            <th style="width: 10%;" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="fs-12" v-for="(list,index) in lists" v-bind:key="index">
                             <td class="text-center"> {{list.code}}</td>
                             <td class="text-center">
-                                <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
+                                <h5 class="fs-13 mb-0 text-dark">{{list.supplier.supplier.name}} - {{list.supplier.name}}</h5>
                             </td>
-                            <td class="text-center"> {{list.brand}}</td>
-                            <td class="text-center"> {{list.category.name}}</td>
-                            <td class="text-center"> {{list.stock}}</td>
-                            <td class="text-center"> {{formatMoney(list.price)}}</td>
+                            <td class="text-center"> {{list.lists.length}}</td>
+                            <td class="text-center"> {{formatMoney(list.total)}}</td>
+                            <td class="text-center"> 
+                                <span :class="'badge '+list.status.color">{{list.status.name}}</span>
+                            </td>
                             <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
-                                <b-button @click="openView(list)" variant="soft-primary" v-b-tooltip.hover title="View Product" size="sm" class="edit-list me-1 w-xs">View</b-button>
+                                <b-button @click="openView(list,index)" variant="soft-primary" v-b-tooltip.hover title="View Product" size="sm" class="edit-list me-1 w-xs">View</b-button>
                                 <!-- <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit Product" size="sm" class="edit-list me-1 w-xs">Edit</b-button> -->
-                                <b-button @click="openOrder(list)" variant="soft-primary" v-b-tooltip.hover title="View Orders" size="sm" class="edit-list me-1 w-xs">Orders</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -65,19 +64,17 @@
             </div>
         </b-col>
     </b-row>
-    <View ref="view"/>
-    <Order ref="order"/>
-    <Create :categories="categories" :suppliers="suppliers" :units="units" :dropdowns="dropdowns" @message="fetch()" ref="create"/>
+    <View :dropdowns="dropdowns" ref="view"/>
+    <Create :suppliers="suppliers" :products="products" :units="units" :dropdowns="dropdowns" @message="fetch()" ref="create"/>
 </template>
 <script>
-import Order from './Order.vue';
 import View from './View.vue';
 import Create from './Create.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { PageHeader, Pagination, Create, View, Order },
-    props: ['categories','suppliers','units','dropdowns'],
+    components: { PageHeader, Pagination, Create, View },
+    props: ['categories','suppliers','units','dropdowns','products'],
     data() {
         return {
             title: "Products Management",
@@ -87,12 +84,27 @@ export default {
             lists: [],
             meta: {},
             links: {},
+            index: ''
         };
     },
-    watch: {
+    watch : {
+        data: {
+            deep: true,
+            handler(val = null) {
+                if(val != null && val !== ''){
+                    this.lists[this.index]= val.data;
+                    this.$refs.view.update(val.data);
+                }
+            },
+        },
         keyword(newVal){
             this.checkSearchStr(newVal);
         }
+    },
+    computed: {
+        data() {
+            return this.$page.props.flash.data;
+        },
     },
     created(){
         this.fetch();
@@ -102,12 +114,11 @@ export default {
             this.fetch();
         }, 300),
         fetch(page_url) {
-            page_url = page_url || '/products';
+            page_url = page_url || '/orders';
             axios.get(page_url, {
                 params: {
                     keyword: (this.keyword) ? this.keyword : '',
                     options: 'lists',
-                    category:  (this.category) ? this.category : '',
                 }
             })
             .then(response => {
@@ -120,12 +131,10 @@ export default {
         openCreate(){
             this.$refs.create.show();
         },
-        openView(data){
+        openView(data,index){
+            this.index = index;
             this.$refs.view.show(data);
         },  
-        openOrder(data){
-            this.$refs.order.show(data);
-        },
         formatMoney(value) {
             let val = (value/1).toFixed(2).replace(',', '.')
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

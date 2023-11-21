@@ -20,6 +20,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/suppliers', App\Http\Controllers\SupplierController::class);
     Route::resource('/products', App\Http\Controllers\ProductController::class);
     Route::resource('/users', App\Http\Controllers\UserController::class);
+    Route::resource('/orders', App\Http\Controllers\OrderController::class);
+    Route::resource('/receives', App\Http\Controllers\ReceivedController::class);
+    Route::resource('/sales', App\Http\Controllers\SaleController::class);
 });
 
 require __DIR__.'/auth.php';

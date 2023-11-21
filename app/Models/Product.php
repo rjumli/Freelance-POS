@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','code','brand','name','price','stock','reorder','information','is_visible','price_id','unit_id','category_id'
+        'id','code','brand','name','stock','price','size','information','category_id','unit_id','pricing_id'
     ];
 
     public function category()
@@ -25,13 +25,19 @@ class Product extends Model
 
     public function pricing()
     {
-        return $this->belongsTo('App\Models\Dropdown', 'price_id', 'id');
+        return $this->belongsTo('App\Models\Dropdown', 'pricing_id', 'id');
     } 
 
-    public function setNameAttribute($value)
+    public function orders()
     {
-        $this->attributes['name'] = ucwords(strtolower($value));
-    }
+        return $this->hasMany('App\Models\OrderList', 'product_id')->orderBy('created_at','DESC');
+    } 
+
+
+    // public function lists()
+    // {
+    //     return $this->hasMany('App\Models\ProductList', 'product_id')->orderBy('created_at','DESC');
+    // } 
 
     public function setBrandAttribute($value)
     {

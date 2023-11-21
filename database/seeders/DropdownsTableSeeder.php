@@ -46,6 +46,69 @@ class DropdownsTableSeeder extends Seeder
                 'color' => 'n/a',
                 'others' => 'n/a',
             ),
+            3 => 
+            array (
+                'id' => 4,
+                'name' => 'Pending',
+                'classification' => 'Order',
+                'type' => 'n/a',
+                'color' => 'bg-warning',
+                'others' => 'n/a',
+            ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'Completed',
+                'classification' => 'Order',
+                'type' => 'n/a',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            5 => 
+            array (
+                'id' => 6,
+                'name' => 'Cancelled',
+                'classification' => 'Order',
+                'type' => 'n/a',
+                'color' => 'bg-danger',
+                'others' => 'n/a',
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'name' => 'Pending',
+                'classification' => 'Orderlist',
+                'type' => 'n/a',
+                'color' => 'bg-warning',
+                'others' => 'n/a',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'name' => 'Received',
+                'classification' => 'Orderlist',
+                'type' => 'n/a',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'name' => 'Not Available',
+                'classification' => 'Orderlist',
+                'type' => 'n/a',
+                'color' => 'bg-dark',
+                'others' => 'n/a',
+            ),
+            9 => 
+            array (
+                'id' => 11,
+                'name' => 'Cancelled',
+                'classification' => 'Orderlist',
+                'type' => 'n/a',
+                'color' => 'bg-danger',
+                'others' => 'n/a',
+            ),
         ));
         
         
