@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\PackageList;
 use Illuminate\Http\Request;
 use App\Http\Resources\DefaultResource;
 
@@ -22,30 +23,44 @@ class PackageController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'name' => 'required|unique:discounts,name,'.$request->id,
-            'value' => 'required|integer',
-            'based_id' => 'required',
-            'type_id' => 'required',
-            'subtype_id' => 'required',
+            'name' => 'required',
+            'quantity' => 'required',
+            'category_id' => 'required',
+            'lists' => 'required|array',
+            'lists.*' => 'required|array',
+            'lists.*.product' => 'required',
+            'lists.*.price' => 'required',
+            'lists.*.quantity' => 'required|integer|min:1',
         ]);
-
         $data = \DB::transaction(function () use ($request){
             if($request->editable){
                 $data = Package::where('id',$request->id)->first();
                 $data->update($request->except('editable'));
                 return $data;
             }else{
-                return $data = Package::create($request->all());
+                $total = 0;
+                $code = 'PCKG'.date('Y').date('m').date('d')."-".str_pad((Order::count()+1), 4, '0', STR_PAD_LEFT);  
+                $lists = $request->lists;
+            
+                foreach($lists as $list){
+                    $total = $total + ($list['price'] * $list['quantity']);
+                }
+
+                $data = Package::create(array_merge($request->all(),['code' => $code, 'total' => $total]));
+                if($data){
+                    foreach($lists as $list){
+                        $package = new PackageList;
+                        $package->package_id = $data->id;
+                        $package->product_id = $list['product']['id'];
+                        $package->price = $list['price'];
+                        $package->quantity = $list['quantity'];
+                        $package->total = $list['quantity']*$list['price'];
+                        $package->save();
+                    }
+                }
             }
             
         });
-        $message = ($request->editable) ? 'updated' : 'created';
-        return back()->with([
-            'message' => 'Discount '.$message.' successfully. Thanks',
-            'data' => new DefaultResource($data),
-            'type' => 'bxs-check-circle',
-            'color' => 'success'
-        ]); 
     }
 
     public function lists($request){
