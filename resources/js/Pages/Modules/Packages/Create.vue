@@ -1,46 +1,107 @@
 <template>
-    <b-modal v-model="showModal" title="New Package" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+    <b-modal v-model="showModal" title="New Package" size="xl" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <b-form class="customform mb-2">
             <div class="row customerform">
-                
-                <div class="col-md-8 mt-4">
+                <div class="col-md-12 mt-4">
                    <div class="form-group">
                         <label>Name: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
-                        <input type="text" class="form-control" v-model="discount.name" style="text-transform: capitalize;">
+                        <input type="text" class="form-control" v-model="package.name">
                     </div>
                 </div>
-                <div class="col-md-4 mt-4">
+                <div class="col-md-6 mt-1">
+                    <label>Category: <span v-if="form.errors" v-text="form.errors.category_id" class="haveerror"></span></label>
+                    <multiselect v-model="package.category" id="ajax" :track-by="id" label="name"
+                        placeholder="Select Category" open-direction="bottom" :options="categories_list"
+                        :allow-empty="false"
+                        :show-labels="false">
+                    </multiselect> 
+                </div>
+                <div class="col-md-3" style="margin-top: 15px;">
                    <div class="form-group">
-                        <label>Value: <span v-if="form.errors" v-text="form.errors.value" class="haveerror"></span></label>
-                        <input type="text" class="form-control" v-model="discount.value">
+                        <label>Quantity: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
+                        <input type="text" class="form-control" v-model="package.name">
                     </div>
                 </div>
-                <div class="col-md-12 mt-1">
-                    <label>Based: <span v-if="form.errors" v-text="form.errors.based_id" class="haveerror"></span></label>
-                    <multiselect v-model="discount.based" id="ajax" label="name" track-by="id"
-                        placeholder="Select" open-direction="bottom" :options="baseds"
-                        :allow-empty="false"
-                        :show-labels="false">
-                    </multiselect> 
+                <div class="col-md-3" style="margin-top: 15px;">
+                   <div class="form-group">
+                        <label>Price: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
+                        <input type="text" class="form-control" v-model="package.name">
+                    </div>
                 </div>
-                <div class="col-md-6 mt-2">
-                    <label>Type: <span v-if="form.errors" v-text="form.errors.type_id" class="haveerror"></span></label>
-                    <multiselect v-model="discount.type" id="ajax" label="name" track-by="id"
-                        placeholder="Select" open-direction="bottom" :options="types"
-                        :allow-empty="false"
-                        :show-labels="false">
-                    </multiselect> 
+
+                <div class="col-md-12">
+                    <hr class="text-muted"/>
                 </div>
-                <div class="col-md-6 mt-2">
-                    <label>Subtype: <span v-if="form.errors" v-text="form.errors.subtype_id" class="haveerror"></span></label>
-                    <multiselect v-model="discount.subtype" id="ajax" label="name" track-by="id"
-                        placeholder="Select" open-direction="bottom" :options="subtypes"
-                        :allow-empty="false"
-                        :show-labels="false">
-                    </multiselect> 
+                <div class="col-sm-12 mt-1">
+                     <b-row class="mt-n3">
+                        <div class="col-md-6">
+                            <div class="page-title-left mt-2">
+                                <ol class="breadcrumb m-0 fs-13">
+                                    <li class="breadcrumb-item text-primary fw-semibold">List of Products</li>
+                                </ol>
+                            </div> 
+                        </div>
+                        <div class="col-md-6">
+                            <div class="hstack float-end gap-2 mt-4 mt-sm-0">
+                                <button @click="add()" class="btn btn-primary btn-sm btn-label mt-1" type="button">
+                                    <div class="btn-content"><i class="ri-add-circle-fill label-icon align-middle fs-12 me-2"></i>Add Product</div>
+                                </button>
+                            </div>
+                        </div>
+                    </b-row>
                 </div>
-               
-    
+                <div class="col-sm-12 mt-n2">
+                    <hr class="text-muted"/>
+                </div>
+                <div class="col-sm-12 mt-n2">
+                    <div class="row">
+                         <div class="col-sm-12 mt-n2">
+
+                         <table class="table align-middle mt-2">
+                            <thead class="table-light fs-11">
+                               <tr>
+                                    <th width="5%"></th>
+                                    <th class="text-center" width="35%">Type</th>
+                                    <th class="text-center" width="10%">Qnty</th>
+                                    <th class="text-center" width="15%">Unit Price</th>
+                                    <th class="text-center" width="15%">Price</th>
+                                    <th class="text-center" width="25%">Total</th>
+                                </tr>
+                            </thead>
+                         </table>
+                         <table class="table table-borderless align-middle mt-n3">
+                            <tbody>
+                                <tr v-for="(list, index) in package.lists" v-bind:key="'a-'+index" class="mb-n4" style="display: block;">
+                                    <td class="text-end" width="5%">
+                                        <b-button @click="rmv(index)" variant="soft-danger" v-b-tooltip.hover title="Remove" class="edit-list btn-sm mt-n2">
+                                            <i class="ri-delete-bin-5-line align-bottom"></i> 
+                                        </b-button>
+                                    </td>
+                                    <td class="text-center" width="35%">
+                                        <select @change="check('product',index)" :style="(form.errors && form.errors[`lists.${index}.product`]) ? 'color: red':''" v-model="list.product" class="form-select form-select-sm mt-n1">
+                                            <option :value="null" disabled>Select Product</option>
+                                            <option :value="product" v-for="(product,index) in products" v-bind:key="index" :disabled="isTypeSelected(product.id)">{{product.name}} - {{product.brand}}</option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center" width="10%">
+                                        <input @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="text" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
+                                    </td>
+                                    <td class="text-center" width="15%">
+                                        <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(package.lists[index].current)" placeholder="Amount" required>
+                                    </td>
+                                    <td class="text-center" width="15%">
+                                        <Amount class="text-center" @change="check('amount',index)" :style="(form.errors && form.errors[`lists.${index}.price`]) ? 'color: red':''" @amount="handleAmount" :index="index" :size="'form-control-sm'" ref="testing" :readonly="false"/>
+                                        <!-- <input type="text" class="form-control form-control-sm" v-model="tub.amount" placeholder="Amount" required> -->
+                                    </td>
+                                    <td width="25%" class="text-center">
+                                        <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(package.lists[index].quantity * package.lists[index].price)" placeholder="Amount" required>
+                                    </td>
+                                </tr>
+                            </tbody>
+                         </table>
+                         </div>
+                    </div>
+                </div>
             </div>
         </b-form>
         <template v-slot:footer>
@@ -50,35 +111,25 @@
     </b-modal>
 </template>
 <script>
+import Amount from "@/Shared/Components/Amount.vue";
 import Multiselect from '@suadelabs/vue3-multiselect';
 export default {
-    props: ['dropdowns','categories'],
-    components: { Multiselect },
+    props: ['categories','products'],
+    components: { Multiselect, Amount },
     data(){
         return {
             showModal: false,
-            discount: {
+            package: {
                 id: '',
                 name: '',
-                value: '',
-                based: '',
-                type: '',
-                subtype: ''
+                category: '',
+                lists: [{product: null, current:0 ,quantity: 0,price: 0}]
             },
             form: {},
             editable: false,
         }
     },
     computed: {
-        baseds : function() {
-            return this.dropdowns.filter(x => x.classification == 'Discount').filter(x => x.type == 'Based');
-        },
-        types : function() {
-            return this.dropdowns.filter(x => x.classification == 'Discount').filter(x => x.type == 'Type');
-        },
-        subtypes : function() {
-            return this.dropdowns.filter(x => x.classification == 'Discount').filter(x => x.type == 'Subtype');
-        },
         categories_list : function() {
             return this.categories.filter(x => x.type == 'Package');
         },
@@ -88,22 +139,20 @@ export default {
             this.showModal = true;
         },
         edit(data){
-            this.discount = data;
+            this.product = data;
             this.editable = true;
             this.showModal = true;
         },
         create(){
             this.form = this.$inertia.form({
-                id: this.id,
-                name: this.discount.name,
-                value: this.discount.value,
-                based_id: (this.discount.based) ? this.discount.based.id : '',
-                type_id: (this.discount.type) ? this.discount.type.id : '',
-                subtype_id: (this.discount.subtype) ? this.discount.subtype.id : '',
+                id: this.package.id,
+                name: this.package.name, 
+                category_id: (this.package.category) ? this.order.category.id : '', 
+                lists: this.package.lists,
                 editable: this.editable
             })
 
-            this.form.post('/discounts',{
+            this.form.post('/orders',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.hide();
@@ -111,17 +160,45 @@ export default {
             });
         },
         hide(){
-            this.discount = {
+            this.customers = {
                 id: '',
                 name: '',
-                value: '',
-                based: '',
-                type: '',
-                subtype: '',
+                contact: '',
+                email: '',
             };
             this.$emit('message',true);
             this.showModal = false;
         },
+        add(){
+            this.package.lists.push({product: null,price: 0, current:0 ,quantity: 0})
+        },
+        rmv(index){
+            this.package.lists.splice(index,1);
+        },
+        handleAmount(val){
+            this.package.lists[val[1]].price = val[0].replace('₱ ', '').replace(/,/g, '');
+        },
+        formatMoney(value) {
+            let val = (value/1).toFixed(2).replace(',', '.')
+            return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        },
+        isTypeSelected(typeId) {
+            return this.package.lists.slice(0, -1).some(item => item.product === typeId);
+        },
+        check(data,index){
+            if(this.form.errors){
+                if(data == 'product'){
+                    this.form.errors[`lists.${index}.product`] = '';
+                }else if(data == 'quantity'){
+                    this.form.errors[`lists.${index}.quantity`] = '';
+                }else{
+                    this.form.errors[`lists.${index}.price`] = '';
+                }
+            }
+            if(data == 'product'){
+                this.package.lists[index].current = this.package.lists[index].product.price;
+            }
+        }
     }
 }
 </script>

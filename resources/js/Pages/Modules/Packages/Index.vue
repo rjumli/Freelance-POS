@@ -14,7 +14,7 @@
                         <input type="text" v-model="keyword" placeholder="Search Name" class="form-control" style="width: 50%;">
                         
                         <b-button @click="openCreate()" type="button" variant="primary">
-                            <i class="ri-add-circle-fill align-bottom me-1"></i> New Discount
+                            <i class="ri-add-circle-fill align-bottom me-1"></i> New Package
                         </b-button>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             </div>
         </b-col>
     </b-row>
-    <Create :dropdowns="dropdowns" @message="fetch()" ref="create"/>
+    <Create :categories="categories" :products="products" @message="fetch()" ref="create"/>
 </template>
 <script>
 import Create from './Create.vue';
@@ -71,7 +71,7 @@ import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     components: { PageHeader, Pagination, Create },
-    props: ['dropdowns','categories'],
+    props: ['dropdowns','categories','products'],
     data() {
         return {
             title: "Discount Management",

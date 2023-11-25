@@ -1,11 +1,11 @@
 <template>
-    <b-modal v-model="showModal" title="New Purchased Order" size="lg" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+    <b-modal v-model="showModal" title="New Purchased Order" size="xl" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <b-form class="customform mb-2">
             <div class="row customerform">
                 <div class="col-md-12 mt-2">
                     <label>Supplier: <span v-if="form.errors" v-text="form.errors.supplier_id" class="haveerror"></span></label>
                     <multiselect v-model="order.supplier" id="ajax" :track-by="id" :custom-label="nameWithLang"
-                        placeholder="Select Category" open-direction="bottom" :options="suppliers"
+                        placeholder="Select Supplier" open-direction="bottom" :options="suppliers"
                         :allow-empty="false"
                         :show-labels="false">
                     </multiselect> 
@@ -42,10 +42,11 @@
                          <table class="table align-middle mt-2">
                             <thead class="table-light fs-11">
                                <tr>
-                                    <th width="5%"></th>
+                                <th width="5%"></th>
                                     <th class="text-center" width="35%">Type</th>
                                     <th class="text-center" width="10%">Qnty</th>
-                                    <th class="text-center" width="25%">Amount</th>
+                                    <th class="text-center" width="15%">Unit Price</th>
+                                    <th class="text-center" width="15%">Price</th>
                                     <th class="text-center" width="25%">Total</th>
                                 </tr>
                             </thead>
@@ -61,13 +62,16 @@
                                     <td class="text-center" width="35%">
                                         <select @change="check('product',index)" :style="(form.errors && form.errors[`lists.${index}.product`]) ? 'color: red':''" v-model="list.product" class="form-select form-select-sm mt-n1">
                                             <option :value="null" disabled>Select Product</option>
-                                            <option :value="product.id" v-for="(product,index) in products" v-bind:key="index" :disabled="isTypeSelected(product.id)">{{product.name}} - {{product.brand}}</option>
+                                            <option :value="product" v-for="(product,index) in products" v-bind:key="index" :disabled="isTypeSelected(product.id)">{{product.name}} - {{product.brand}}</option>
                                         </select>
                                     </td>
                                     <td class="text-center" width="10%">
                                         <input @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="text" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
                                     </td>
-                                    <td class="text-center" width="25%">
+                                    <td class="text-center" width="15%">
+                                        <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(order.lists[index].current)" placeholder="Amount" required>
+                                    </td>
+                                    <td class="text-center" width="15%">
                                         <Amount class="text-center" @change="check('amount',index)" :style="(form.errors && form.errors[`lists.${index}.price`]) ? 'color: red':''" @amount="handleAmount" :index="index" :size="'form-control-sm'" ref="testing" :readonly="false"/>
                                         <!-- <input type="text" class="form-control form-control-sm" v-model="tub.amount" placeholder="Amount" required> -->
                                     </td>
@@ -100,7 +104,7 @@ export default {
             order: {
                 id: '',
                 supplier: '',
-                lists: [{product: null,quantity: 0,price: 0}]
+                lists: [{product: null,quantity: 0, current: 0,price: 0}]
             },
             form: {},
             editable: false,
@@ -141,7 +145,7 @@ export default {
             this.showModal = false;
         },
         add(){
-            this.order.lists.push({product: null,price: 0,quantity: 0})
+            this.order.lists.push({product: null,price: 0,current: 0, quantity: 0})
         },
         rmv(index){
             this.order.lists.splice(index,1);
@@ -168,6 +172,9 @@ export default {
                 }else{
                     this.form.errors[`lists.${index}.price`] = '';
                 }
+            }
+            if(data == 'product'){
+                this.order.lists[index].current = this.order.lists[index].product.price;
             }
         }
     }

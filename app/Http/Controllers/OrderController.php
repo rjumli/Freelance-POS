@@ -53,7 +53,7 @@ class OrderController extends Controller
                     foreach($lists as $list){
                         $order = new OrderList;
                         $order->order_id = $data->id;
-                        $order->product_id = $list['product'];
+                        $order->product_id = $list['product']['id'];
                         $order->price = $list['price'];
                         $order->quantity = $list['quantity'];
                         $order->status_id = 7;
