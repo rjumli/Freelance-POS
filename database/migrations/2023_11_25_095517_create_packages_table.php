@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->decimal('price',12,2);
-            $table->integer('quantity');
+            $table->integer('stock');
             $table->longText('information');
-            $table->boolean('is_available');
+            $table->boolean('is_available')->default(0);
             $table->tinyInteger('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

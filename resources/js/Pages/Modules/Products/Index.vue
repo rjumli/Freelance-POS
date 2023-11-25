@@ -1,11 +1,7 @@
 <template>
-    <Head title="Customer Management" />
-    <!-- <PageHeader :title="title" :items="items" /> -->
-
+    <Head title="Product Management" />
     <b-row>
         <b-col xl="12">
-            <!-- <b-card no-body>
-                <b-card-body style="height: calc(100vh - 284px)"> -->
             <div class=" d-flex align-items-center">
                 <h3 class="flex-grow-1 mb-n3">Products Management</h3>
                 <div class="flex-shrink-0">
@@ -22,11 +18,8 @@
                     </div>
                 </div>
             </div>
-                <!-- </b-card-body>
-            </b-card> -->
             <hr class="text-muted"/>
         </b-col>
-
         <b-col xl="12">
             <div class="table-responsive">
                 <table class="table table-nowrap table-bordered align-middle mb-0">

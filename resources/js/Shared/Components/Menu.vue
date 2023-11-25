@@ -73,6 +73,12 @@
                     </Link>
                 </li>
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Maintenance') }" href="/maintenance">
+                        <i class='ri ri-settings-4-fill'></i>
+                        <span data-key="t-dashboards">Maintenance</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Users') }" href="/users">
                         <i class='ri ri-shield-user-line'></i>
                         <span data-key="t-dashboards">User Management</span>

@@ -1,5 +1,5 @@
 <template>
-    <Head title="Customer Management" />
+    <Head title="Package Management" />
     <!-- <PageHeader :title="title" :items="items" /> -->
 
     <b-row>
@@ -29,32 +29,32 @@
                 <table class="table table-nowrap table-bordered align-middle mb-0">
                     <thead class="bg-primary">
                         <tr class="fs-13 text-light">
-                            <th style="width: 20%;">Name</th>
-                            <th style="width: 10%;" class="text-center">Category</th>
+                            <th style="width: 15%;" class="text-center">Code</th>
+                            <th style="width: 20%;" class="text-center">Name</th>
+                            <th style="width: 15%;" class="text-center">Category</th>
                             <th style="width: 10%;" class="text-center">Stock</th>
                             <th style="width: 10%;" class="text-center">Price</th>
                             <th style="width: 10%;" class="text-center">Status</th>
                             <th style="width: 15%;" class="text-center">Created At</th>
-                            <th style="width: 15%;" class="text-center">Action</th>
+                            <th style="width: 10%;" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(list,index) in lists" v-bind:key="index">
+                            <td class="text-center"> {{list.code}}</td>
                             <td>
-                                <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
+                                <h5 class="fs-13 mb-0 text-dark text-center">{{list.name}}</h5>
                             </td>
-                            <td class="text-center"> {{(list.subtype.name == 'Amount') ? formatMoney(list.value) : list.value+'%'}}</td>
-                            <td class="text-center"> {{list.based.name}}</td>
-                            <td class="text-center"> {{list.type.name}}</td>
-                            <td class="text-center"> {{list.subtype.name}}</td>
+                            <td class="text-center"> {{list.category.name}}</td>
+                            <td class="text-center"> {{list.stock}}</td>
+                            <td class="text-center"> {{list.price}}</td>
                             <td class="text-center">
-                                <b-badge v-if="list.is_active" variant="success">Active</b-badge>
+                                <b-badge v-if="list.is_available" variant="success">Active</b-badge>
                                 <b-badge v-else variant="danger">Inactive</b-badge>
                             </td>
                             <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
-                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list me-1 w-xs">EDIT</b-button>
-                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
+                                <b-button @click="openView(list,index)" variant="soft-primary" v-b-tooltip.hover title="View Product" size="sm" class="edit-list me-1 w-xs">View</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -63,14 +63,16 @@
             </div>
         </b-col>
     </b-row>
+    <View ref="view"/>
     <Create :categories="categories" :products="products" @message="fetch()" ref="create"/>
 </template>
 <script>
+import View from './View.vue';
 import Create from './Create.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { PageHeader, Pagination, Create },
+    components: { PageHeader, Pagination, Create, View },
     props: ['dropdowns','categories','products'],
     data() {
         return {
@@ -112,6 +114,10 @@ export default {
         openCreate(){
             this.$refs.create.show();
         },
+        openView(data,index){
+            this.index = index;
+            this.$refs.view.show(data);
+        },  
         edit(data){
             this.$refs.create.edit(data);
         },

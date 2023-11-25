@@ -2,13 +2,13 @@
     <b-modal v-model="showModal" title="New Package" size="xl" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <b-form class="customform mb-2">
             <div class="row customerform">
-                <div class="col-md-12 mt-4">
+                <div class="col-md-12 mt-2">
                    <div class="form-group">
                         <label>Name: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
                         <input type="text" class="form-control" v-model="package.name">
                     </div>
                 </div>
-                <div class="col-md-6 mt-1">
+                <div class="col-md-6 mt-n1">
                     <label>Category: <span v-if="form.errors" v-text="form.errors.category_id" class="haveerror"></span></label>
                     <multiselect v-model="package.category" id="ajax" :track-by="id" label="name"
                         placeholder="Select Category" open-direction="bottom" :options="categories_list"
@@ -16,16 +16,21 @@
                         :show-labels="false">
                     </multiselect> 
                 </div>
-                <div class="col-md-3" style="margin-top: 15px;">
+                <div class="col-md-3" style="margin-top: 7px;">
                    <div class="form-group">
-                        <label>Quantity: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
-                        <input type="text" class="form-control" v-model="package.name">
+                        <label>Quantity: <span v-if="form.errors" v-text="form.errors.stock" class="haveerror"></span></label>
+                        <input type="number" class="form-control" v-model="package.quantity">
                     </div>
                 </div>
-                <div class="col-md-3" style="margin-top: 15px;">
+                <div class="col-md-3" style="margin-top: 7px;">
                    <div class="form-group">
-                        <label>Price: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
-                        <input type="text" class="form-control" v-model="package.name">
+                        <label>Price: <span v-if="form.errors" v-text="form.errors.price" class="haveerror"></span></label>
+                        <input type="text" class="form-control" v-model="package.tempprice">
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                   <div class="form-group">
+                        <textarea v-model="package.information" class="form-control" maxlength="225" rows="1" placeholder="Description"></textarea>
                     </div>
                 </div>
 
@@ -84,7 +89,7 @@
                                         </select>
                                     </td>
                                     <td class="text-center" width="10%">
-                                        <input @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="text" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
+                                        <input min="1" v-bind:max="package.lists[index].product.stock" @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="number" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
                                     </td>
                                     <td class="text-center" width="15%">
                                         <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(package.lists[index].current)" placeholder="Amount" required>
@@ -94,7 +99,7 @@
                                         <!-- <input type="text" class="form-control form-control-sm" v-model="tub.amount" placeholder="Amount" required> -->
                                     </td>
                                     <td width="25%" class="text-center">
-                                        <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(package.lists[index].quantity * package.lists[index].price)" placeholder="Amount" required>
+                                        <input type="text" readonly class="form-control form-control-sm text-center" :value="totalPrice(package.lists[index].quantity * package.lists[index].price,index)" placeholder="Amount" required>
                                     </td>
                                 </tr>
                             </tbody>
@@ -123,7 +128,11 @@ export default {
                 id: '',
                 name: '',
                 category: '',
-                lists: [{product: null, current:0 ,quantity: 0,price: 0}]
+                quantity: 0,
+                information: '',
+                price: 0,
+                tempprice: 0,
+                lists: [{product: { stock: 0}, current:0 ,quantity:0, price:0, total: 0}]
             },
             form: {},
             editable: false,
@@ -132,6 +141,11 @@ export default {
     computed: {
         categories_list : function() {
             return this.categories.filter(x => x.type == 'Package');
+        },
+    },
+    watch : {
+        'package.price'(){
+            return this.package.lists.reduce((acc, number) => acc + number.total, 0);
         },
     },
     methods : {
@@ -147,12 +161,15 @@ export default {
             this.form = this.$inertia.form({
                 id: this.package.id,
                 name: this.package.name, 
-                category_id: (this.package.category) ? this.order.category.id : '', 
+                stock: this.package.quantity, 
+                price: this.package.price,
+                information: this.package.information,
+                category_id: (this.package.category) ? this.package.category.id : '', 
                 lists: this.package.lists,
                 editable: this.editable
             })
 
-            this.form.post('/orders',{
+            this.form.post('/packages',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.hide();
@@ -170,7 +187,7 @@ export default {
             this.showModal = false;
         },
         add(){
-            this.package.lists.push({product: null,price: 0, current:0 ,quantity: 0})
+            this.package.lists.push({product: null,price: 0, current:0 ,quantity: 0, total: 0})
         },
         rmv(index){
             this.package.lists.splice(index,1);
@@ -183,7 +200,7 @@ export default {
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         },
         isTypeSelected(typeId) {
-            return this.package.lists.slice(0, -1).some(item => item.product === typeId);
+            return this.package.lists.slice(0, -1).some(item => item.product.id === typeId);
         },
         check(data,index){
             if(this.form.errors){
@@ -198,6 +215,15 @@ export default {
             if(data == 'product'){
                 this.package.lists[index].current = this.package.lists[index].product.price;
             }
+        },
+        totalPrice(val,index){
+            this.package.lists[index].total = val;
+            this.total();
+            return this.formatMoney(val);
+        },
+        total(){
+            this.package.price = this.package.lists.reduce((acc, number) => acc + number.total, 0);
+            this.package.tempprice = this.formatMoney(this.package.lists.reduce((acc, number) => acc + number.total, 0));
         }
     }
 }

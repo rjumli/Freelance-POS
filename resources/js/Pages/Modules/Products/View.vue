@@ -15,16 +15,19 @@
                                 <div class="text-muted">Created At : <span class="text-body fw-medium">{{product.created_at}}</span></div>
                             </div>
                         </div>
-                        <div class="flex-shrink-0">
+                        <div class="flex-shrink-0 mt-n2">
                             <div>
                                 <QRCodeVue3
                                     :value="product.code"
                                     :key="product.code"
-                                    :width="50"
-                                    :height="50"
+                                    :width="80"
+                                    :height="80"
                                     :qrOptions="{ typeNumber: '0', mode: 'Byte', errorCorrectionLevel: 'Q' }"
                                     :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
                                     :dotsOptions="{ type: 'square', color: '#05004d' }"
+                                    :download="true"
+                                    downloadButton="btn btn-light btn-sm"
+                                    :downloadOptions="{ name: product.code, extension: 'png'}"
                                     :cornersSquareOptions="{ type: 'square', color: '#0e013c' }"
                                 />
                                 <!-- <vue-barcode  :value="product.code" :options="{ displayValue: true }"  style="height: 50px;"></vue-barcode> -->
@@ -32,9 +35,6 @@
                             </div>
                         </div>
                     </div>
-
-                   
-
                     <div class="row mt-4">
                         <div class="col-lg-3 col-sm-6">
                             <div class="p-2 border border-dashed rounded">
@@ -51,7 +51,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end col -->
                         <div class="col-lg-3 col-sm-6">
                             <div class="p-2 border border-dashed rounded">
                                 <div class="d-flex align-items-center">
@@ -67,7 +66,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end col -->
                         <div class="col-lg-3 col-sm-6">
                             <div class="p-2 border border-dashed rounded">
                                 <div class="d-flex align-items-center">
@@ -83,7 +81,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end col -->
                         <div class="col-lg-3 col-sm-6">
                             <div class="p-2 border border-dashed rounded">
                                 <div class="d-flex align-items-center">
@@ -99,93 +96,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- end col -->
                     </div>
-
-                    <!-- <div class="row">
-                        <div class="col-xl-6">
-                            <div class="mt-4">
-                                <h5 class="fs-14">Sizes :</h5>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-original-title="Out of Stock">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio1" disabled="">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio1">S</label>
-                                    </div>
-
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-original-title="04 Items Available">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio2">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio2">M</label>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-original-title="06 Items Available">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio3">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio3">L</label>
-                                    </div>
-
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-original-title="Out of Stock">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio4" disabled="">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio4">XL</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-6">
-                            <div class=" mt-4">
-                                <h5 class="fs-14">Colors :</h5>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Out of Stock" data-bs-original-title="Out of Stock">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-primary" disabled="">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="03 Items Available" data-bs-original-title="03 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-secondary">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="03 Items Available" data-bs-original-title="03 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-success">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="02 Items Available" data-bs-original-title="02 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-info">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="01 Items Available" data-bs-original-title="01 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-warning">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="04 Items Available" data-bs-original-title="04 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-danger">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="03 Items Available" data-bs-original-title="03 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-light">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="04 Items Available" data-bs-original-title="04 Items Available">
-                                        <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-body">
-                                            <i class="ri-checkbox-blank-circle-fill"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="mt-4 text-muted">
                         <h5 class="fs-14">Description :</h5>
                         <p>{{product.information}}.</p>
                     </div>
-
-                 
-
-                    
                 </div>
             </div>
         <template v-slot:footer>

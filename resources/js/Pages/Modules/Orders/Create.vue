@@ -161,7 +161,7 @@ export default {
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         },
         isTypeSelected(typeId) {
-            return this.order.lists.slice(0, -1).some(item => item.product === typeId);
+            return this.order.lists.slice(0, -1).some(item => item.product.id === typeId);
         },
         check(data,index){
             if(this.form.errors){

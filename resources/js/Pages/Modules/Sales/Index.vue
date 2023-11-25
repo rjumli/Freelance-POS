@@ -1,5 +1,5 @@
 <template>
-    <Head title="Sales" />
+    <Head title="Sales"/>
     <div class="row">
         <div class="col-md-8">
             <div class="row">
@@ -8,22 +8,12 @@
                         <div class="card-body">
                             <div class="input-group mb-1">
                                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                                <input type="text" v-model="keyword" placeholder="Search Product Code" class="form-control" autofocus>
+                                <input type="text" v-model="keyword" placeholder="Search Code/Name" class="form-control" autofocus>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <!-- <div class="card">
-                        <div class="">
-                            <div class="card ribbon-box border shadow-none mb-lg-0 right">
-                                <div class="card-body text-muted">
-                                    <div class="ribbon-two ribbon-two-danger"><span class="fs-10">Discounted</span></div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <b-card no-body class="product">
                         <div class="card-header align-items-center d-flex">
                             <h5 class="card-title mb-0 flex-grow-1">CART ({{lists.length}} items)</h5>
@@ -38,8 +28,8 @@
                             <table class="table table-bordered align-middle">
                                 <thead class="table-light fs-11">
                                     <tr>
-                                        <th width="5%"></th>
-                                        <th width="52%">Product</th>
+                                        <th class="text-center" width="5%">#</th>
+                                        <th width="52%">Items</th>
                                         <th class="text-center" width="12%">Quantity</th>
                                         <th class="text-center" width="13%">Price</th>
                                         <th class="text-center" width="13%">Total</th>
@@ -53,13 +43,13 @@
                                             </button>
                                         </td>
                                         <td>
-                                            <h6 class="mb-0">{{list.name}} - {{ list.brand }}</h6>
+                                            <h6 class="mb-0">{{list.name}} - <span :class="list.type == 'Package' ? 'text-danger' : ''">{{ list.brand }}</span></h6>
                                             <p class="text-muted mb-0">{{list.code}}</p>
                                         </td>
                                         <td class="text-center">
                                             <div class="input-step">
                                                 <button @click="minus(index)" type="button">–</button>
-                                                    <input type="number" class="product-quantity" v-model="list.quantity" min="1" :max="list.stock" />
+                                                <input type="number" class="product-quantity" v-model="list.quantity" min="1" :max="list.stock" />
                                                 <button @click="plus(index)" type="button" class="plus">+</button>
                                             </div>
                                         </td>
@@ -68,11 +58,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                           
                         </b-card-body>
-                       
                     </b-card>
-                    
                 </div>
             </div>
         </div>
@@ -89,17 +76,23 @@
                             :show-labels="false">
                         </multiselect> 
                     </div>
-                </div>
-                <div class="card-header bg-light-subtle border-bottom-dashed">
-                    <div class="col-md-12 ">
+                    <div class="col-md-12 mt-2">
                         <multiselect v-model="discount" id="ajax" label="name" track-by="id"
                             placeholder="Select Discount" open-direction="bottom" :options="discounts"
                             :allow-empty="false"
                             :show-labels="false">
                         </multiselect> 
                     </div>
+                    <div class="col-md-12 mt-2">
+                        <multiselect v-model="payment" id="ajax" label="name" track-by="id"
+                            placeholder="Select Payment" open-direction="bottom" :options="payments"
+                            :allow-empty="false"
+                            :show-labels="false">
+                        </multiselect> 
+                    </div>
                 </div>
-                <div class="card-body" style="height: calc(100vh - 383px); overflow: auto;">
+             
+                <div class="card-body" style="height: calc(100vh - 404px); overflow: auto;">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <tbody>
@@ -124,17 +117,20 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button  @click="create('ok')" class="btn btn-primary" type="button">Proceed</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-   
+    <Nothing ref="nothing"/>
 </template>
 <script>
+import Nothing from './Nothing.vue';
 import Multiselect from '@suadelabs/vue3-multiselect';
 export default {
-    components : { Multiselect },
+    components : { Multiselect, Nothing },
     props: ['categories','suppliers','units','dropdowns','customers','discounts'],
     data() {
         return {
@@ -143,6 +139,7 @@ export default {
             value: 1,
             form: {},
             customer: '',
+            payment: '',
             discount: this.discounts[0],
             discounted : 0
         };
@@ -168,9 +165,34 @@ export default {
         },
         total() {
             return this.subtotal + this.tax - this.discounted;
-        }
+        },
+        payments : function() {
+            let p =  this.dropdowns.filter(x => x.classification == 'Payment');
+            this.payment = p[0];
+            return p;
+        },
     },
     methods: {
+        create(){
+            this.form = this.$inertia.form({
+                customer_id: (this.customer) ? this.customer.id : '', 
+                payment_id: (this.payment) ? this.payment.id : '', 
+                discount_id: (this.discount) ? this.discount.id : '', 
+                discount: this.discounted,
+                tax: this.tax,
+                subtotal: this.subtotal,
+                total: this.total,
+                status_id: 23,
+                lists: this.lists
+            })
+
+            this.form.post('/sales',{
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.hide();
+                },
+            });
+        },
         checkSearchStr: _.debounce(function(string) {
             this.fetch();
         }, 300),
@@ -184,10 +206,14 @@ export default {
             })
             .then(response => {
                 if(response.data.data.length != 0){
-                    const itemCode = response.data.data.code;
-                    if (!this.itemExists(itemCode)) {
-                        response.data.data.quantity = 1;
-                        this.lists.unshift(response.data.data);
+                    if( response.data.data.stock == 0){
+                        this.$refs.nothing.show(response.data.data);
+                    }else{
+                        const itemCode = response.data.data.code;
+                        if (!this.itemExists(itemCode)) {
+                            response.data.data.quantity = 1;
+                            this.lists.unshift(response.data.data);
+                        }
                     }
                     this.keyword = '';
                 }
@@ -224,7 +250,10 @@ export default {
             let percent = val/100
             this.discounted = this.subtotal * percent;
         },
-     
+        hide(){
+            this.customer = '';
+            this.lists = [];
+        }
     }
 }
 </script>

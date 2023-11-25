@@ -17,6 +17,10 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('code')->unique();
+            $table->decimal('subtotal',12,2);
+            $table->decimal('discount',12,2);
+            $table->decimal('tax',12,2);
+            $table->decimal('total',12,2);
             $table->tinyInteger('status_id')->unsigned()->index();
             $table->foreign('status_id')->references('id')->on('dropdowns')->onDelete('cascade');
             $table->tinyInteger('payment_id')->unsigned()->index();

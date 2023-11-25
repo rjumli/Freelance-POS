@@ -24,7 +24,9 @@ class PackageController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'quantity' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'information' => 'required',
             'category_id' => 'required',
             'lists' => 'required|array',
             'lists.*' => 'required|array',
@@ -39,7 +41,7 @@ class PackageController extends Controller
                 return $data;
             }else{
                 $total = 0;
-                $code = 'PCKG'.date('Y').date('m').date('d')."-".str_pad((Order::count()+1), 4, '0', STR_PAD_LEFT);  
+                $code = 'PCKG'.date('Y').date('m').date('d')."-".str_pad((Package::count()+1), 4, '0', STR_PAD_LEFT);  
                 $lists = $request->lists;
             
                 foreach($lists as $list){
@@ -68,7 +70,7 @@ class PackageController extends Controller
             Package::when($request->keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', '%'.$keyword.'%');
             })
-            ->with('lists')
+            ->with('lists.product','category')
             ->orderBy('id','asc')
             ->paginate(10)
             ->withQueryString()

@@ -114,7 +114,7 @@ class DropdownsTableSeeder extends Seeder
                 'id' => 12,
                 'name' => 'Total Based',
                 'classification' => 'Discount',
-                'type' => 'Type',
+                'type' => 'Based',
                 'color' => 'bg-success',
                 'others' => 'n/a',
             ),
@@ -171,6 +171,43 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Discount',
                 'type' => 'Subtype',
                 'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            17 => 
+            array (
+                'id' => 19,
+                'name' => 'Cash
+',
+                'classification' => 'Payment',
+                'type' => 'Cash',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
+            18 => 
+            array (
+                'id' => 20,
+                'name' => 'Gcash',
+                'classification' => 'Payment',
+                'type' => 'Online',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
+            19 => 
+            array (
+                'id' => 21,
+                'name' => 'Maya',
+                'classification' => 'Payment',
+                'type' => 'Online',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
+            20 => 
+            array (
+                'id' => 22,
+                'name' => 'GrabPay',
+                'classification' => 'Payment',
+                'type' => 'Online',
+                'color' => 'n/a',
                 'others' => 'n/a',
             ),
         ));
