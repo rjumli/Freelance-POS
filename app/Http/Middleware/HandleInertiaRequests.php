@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Unit;
+use App\Models\Discount;
 use App\Models\Dropdown;
 use App\Models\Customer;
 use App\Models\SupplierBranch;
@@ -36,7 +37,8 @@ class HandleInertiaRequests extends Middleware
             'units' => Unit::all(),
             'dropdowns' => Dropdown::all(),
             'products' => Product::all(),
-            'customers' => Customer::all()
+            'customers' => Customer::all(),
+            'discounts' => Discount::all()
         ]);
     }
 }

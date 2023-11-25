@@ -49,6 +49,18 @@
                     </Link>
                 </li>
                 <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Packages') }" href="/packages">
+                        <i class='ri ri-shopping-basket-line'></i>
+                        <span data-key="t-dashboards">Package Management</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Discounts') }" href="/discounts">
+                        <i class='ri ri-price-tag-3-fill'></i>
+                        <span data-key="t-dashboards">Discount Management</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
                     <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Customers') }" href="/customers">
                         <i class='ri ri-team-fill'></i>
                         <span data-key="t-dashboards">Customer Management</span>

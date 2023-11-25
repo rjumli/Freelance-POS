@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/orders', App\Http\Controllers\OrderController::class);
     Route::resource('/receives', App\Http\Controllers\ReceivedController::class);
     Route::resource('/sales', App\Http\Controllers\SaleController::class);
+    Route::resource('/discounts', App\Http\Controllers\DiscountController::class);
+    Route::resource('/packages', App\Http\Controllers\PackageController::class);
 });
 
 require __DIR__.'/auth.php';

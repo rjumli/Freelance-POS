@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('code')->unique();
-            $table->integer('customer_id')->unsigned()->index();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->string('name');
+            $table->decimal('price',12,2);
+            $table->integer('quantity');
+            $table->longText('information');
+            $table->boolean('is_available');
+            $table->tinyInteger('category_id')->unsigned()->index();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('packages');
     }
 };

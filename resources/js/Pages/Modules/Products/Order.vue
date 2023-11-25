@@ -17,7 +17,17 @@
                     </div>
                     <div class="flex-shrink-0">
                         <div>
-                            <vue-barcode  :value="product.code" :options="{ displayValue: true }"  style="height: 50px;"></vue-barcode>
+                            <QRCodeVue3
+                                    :value="product.code"
+                                    :key="product.code"
+                                    :width="50"
+                                    :height="50"
+                                    :qrOptions="{ typeNumber: '0', mode: 'Byte', errorCorrectionLevel: 'Q' }"
+                                    :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
+                                    :dotsOptions="{ type: 'square', color: '#05004d' }"
+                                    :cornersSquareOptions="{ type: 'square', color: '#0e013c' }"
+                                />
+                            <!-- <vue-barcode  :value="product.code" :options="{ displayValue: true }"  style="height: 50px;"></vue-barcode> -->
                             <!-- <a href="apps-ecommerce-add-product.html" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit" data-bs-original-title="Edit"><i class="ri-pencil-fill align-bottom"></i></a> -->
                         </div>
                     </div>
@@ -57,9 +67,10 @@
 </template>
 <script>
 import VueBarcode from '@chenfengyuan/vue-barcode';
+import QRCodeVue3 from "qrcode-vue3";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components : { VueBarcode, Pagination },
+    components : { VueBarcode, Pagination, QRCodeVue3 },
     data(){
         return {
             showModal: false,

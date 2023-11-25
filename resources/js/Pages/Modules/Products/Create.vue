@@ -12,7 +12,7 @@
                 <div class="col-md-6" style="margin-top: -2px;">
                     <label>Category: <span v-if="form.errors" v-text="form.errors.category_id" class="haveerror"></span></label>
                     <multiselect v-model="product.category" id="ajax" label="name" track-by="id"
-                        placeholder="Select " open-direction="bottom" :options="categories"
+                        placeholder="Select " open-direction="bottom" :options="categories_list"
                         :allow-empty="false"
                         :show-labels="false">
                     </multiselect> 
@@ -94,6 +94,9 @@ export default {
     computed: {
         pricings : function() {
             return this.dropdowns.filter(x => x.classification == 'Pricing');
+        },
+        categories_list : function() {
+            return this.categories.filter(x => x.type == 'Product');
         },
     },
     methods : {

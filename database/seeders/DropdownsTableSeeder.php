@@ -109,6 +109,70 @@ class DropdownsTableSeeder extends Seeder
                 'color' => 'bg-danger',
                 'others' => 'n/a',
             ),
+            10 => 
+            array (
+                'id' => 12,
+                'name' => 'Total Based',
+                'classification' => 'Discount',
+                'type' => 'Type',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            11 => 
+            array (
+                'id' => 13,
+                'name' => 'Item Based',
+                'classification' => 'Discount',
+                'type' => 'Based',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            12 => 
+            array (
+                'id' => 14,
+                'name' => 'Occasional',
+                'classification' => 'Discount',
+                'type' => 'Based',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            13 => 
+            array (
+                'id' => 15,
+                'name' => 'Unlimited',
+                'classification' => 'Discount',
+                'type' => 'Type',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            14 => 
+            array (
+                'id' => 16,
+                'name' => 'Limited',
+                'classification' => 'Discount',
+                'type' => 'Type',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            15 => 
+            array (
+                'id' => 17,
+                'name' => 'Amount',
+                'classification' => 'Discount',
+                'type' => 'Subtype',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            16 => 
+            array (
+                'id' => 18,
+                'name' => 'Percentage
+',
+                'classification' => 'Discount',
+                'type' => 'Subtype',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
         ));
         
         

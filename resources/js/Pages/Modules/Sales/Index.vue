@@ -90,7 +90,16 @@
                         </multiselect> 
                     </div>
                 </div>
-                <div class="card-body" style="height: calc(100vh - 310px); overflow: auto;">
+                <div class="card-header bg-light-subtle border-bottom-dashed">
+                    <div class="col-md-12 ">
+                        <multiselect v-model="discount" id="ajax" label="name" track-by="id"
+                            placeholder="Select Discount" open-direction="bottom" :options="discounts"
+                            :allow-empty="false"
+                            :show-labels="false">
+                        </multiselect> 
+                    </div>
+                </div>
+                <div class="card-body" style="height: calc(100vh - 383px); overflow: auto;">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <tbody>
@@ -100,7 +109,7 @@
                                 </tr>
                                 <tr>
                                     <td>Discount : </td>
-                                    <td class="text-end" id="cart-discount">{{formatMoney(discount)}}</td>
+                                    <td class="text-end" id="cart-discount">{{formatMoney(discounted)}}</td>
                                 </tr>
                                 <tr>
                                     <td>Estimated Tax (12%) : </td>
@@ -126,7 +135,7 @@
 import Multiselect from '@suadelabs/vue3-multiselect';
 export default {
     components : { Multiselect },
-    props: ['categories','suppliers','units','dropdowns','customers'],
+    props: ['categories','suppliers','units','dropdowns','customers','discounts'],
     data() {
         return {
             lists: [],
@@ -134,12 +143,20 @@ export default {
             value: 1,
             form: {},
             customer: '',
-            discount: 0
+            discount: this.discounts[0],
+            discounted : 0
         };
     },
     watch: {
         keyword(newVal){
             this.checkSearchStr(newVal);
+        },
+        discount(newVal){
+            if(newVal.subtype_id == 18){
+                this.calculatePercent(newVal.value);
+            }else{
+                this.discounted = this.formatMoeny(newVal.value);
+            }
         }
     },
     computed: {
@@ -150,7 +167,7 @@ export default {
             return this.subtotal * 0.12;
         },
         total() {
-            return this.subtotal + this.tax;
+            return this.subtotal + this.tax - this.discounted;
         }
     },
     methods: {
@@ -202,7 +219,11 @@ export default {
         check(quantity,price,index){
             this.lists[index].total = quantity * price;
             return this.lists[index].total;
-        }
+        },
+        calculatePercent(val){
+            let percent = val/100
+            this.discounted = this.subtotal * percent;
+        },
      
     }
 }

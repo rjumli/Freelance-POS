@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Discount;
 use Illuminate\Http\Request;
 use App\Http\Resources\DefaultResource;
 
-class CustomerController extends Controller
+class DiscountController extends Controller
 {
     public function index(Request $request){
         $options = $request->options;
@@ -15,31 +15,33 @@ class CustomerController extends Controller
                return $this->lists($request);
             break;
             default : 
-            return inertia('Modules/Customers/Index');
+            return inertia('Modules/Discounts/Index');
         }
     }
 
     public function store(Request $request){
 
         $request->validate([
-            'name' => 'required',
-            'contact' => 'required',
-            'email' => 'required|email'
+            'name' => 'required|unique:discounts,name,'.$request->id,
+            'value' => 'required|integer',
+            'based_id' => 'required',
+            'type_id' => 'required',
+            'subtype_id' => 'required',
         ]);
 
         $data = \DB::transaction(function () use ($request){
             if($request->editable){
-                $data = Customer::where('id',$request->id)->first();
+                $data = Discount::where('id',$request->id)->first();
                 $data->update($request->except('editable'));
                 return $data;
             }else{
-                return $data = Customer::create($request->all());
+                return $data = Discount::create($request->all());
             }
             
         });
         $message = ($request->editable) ? 'updated' : 'created';
         return back()->with([
-            'message' => 'Customer '.$message.' successfully. Thanks',
+            'message' => 'Discount '.$message.' successfully. Thanks',
             'data' => new DefaultResource($data),
             'type' => 'bxs-check-circle',
             'color' => 'success'
@@ -48,9 +50,10 @@ class CustomerController extends Controller
 
     public function lists($request){
         $data = DefaultResource::collection(
-            Customer::when($request->keyword, function ($query, $keyword) {
+            Discount::when($request->keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', '%'.$keyword.'%');
             })
+            ->with('type','subtype','based')
             ->orderBy('id','asc')
             ->paginate(10)
             ->withQueryString()

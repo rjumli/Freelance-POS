@@ -5,19 +5,19 @@
                 
                 <div class="col-md-12 mt-4">
                    <div class="form-group">
-                        <label>Name:</label>
+                        <label>Name: <span v-if="form.errors" v-text="form.errors.name" class="haveerror"></span></label>
                         <input type="text" class="form-control" v-model="customer.name" style="text-transform: capitalize;">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
-                        <label>Contact:</label>
+                        <label>Contact: <span v-if="form.errors" v-text="form.errors.contact" class="haveerror"></span></label>
                         <input type="text" class="form-control" v-model="customer.contact">
                     </div>
                 </div>
                 <div class="col-md-6 mt-2">
                    <div class="form-group">
-                        <label>Email:</label>
+                        <label>Email: <span v-if="form.errors" v-text="form.errors.email" class="haveerror"></span></label>
                         <input type="email" class="form-control" v-model="customer.email">
                     </div>
                 </div>
