@@ -65,7 +65,7 @@
         <b-col xxl="4">
             <b-card no-body >
                 <b-card-body style="height: 504px">
-
+                    <Breakdown :breakdown="breakdown"/>
                 </b-card-body>
             </b-card>
         </b-col>
@@ -86,10 +86,11 @@ import Graph from './Graph.vue';
 import Discount from './Discount.vue';
 import Sales from './Sales.vue';
 import Order from './Order.vue';
+import Breakdown from './Breakdown.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
-    components: { PageHeader, Order, Sales, Discount, Graph },
-    props: ['revenue','customer_count','stocks','orders','dropdowns','units','suppliers','products','sales','active_discounts'],
+    components: { PageHeader, Order, Sales, Discount, Graph, Breakdown },
+    props: ['revenue','customer_count','stocks','orders','dropdowns','units','suppliers','products','sales','active_discounts','breakdown'],
     data() {
         return {
             title: "Dashboard",

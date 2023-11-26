@@ -41,12 +41,12 @@ class HandleInertiaRequests extends Middleware
             'products' => Product::all(),
             'customers' => Customer::all(),
             'discounts' => Discount::all(),
-            'revenue' => Sale::sum('total'),
+            'revenue' => Sale::where('status_id',24)->sum('total'),
             'customer_count' => Customer::count(),
             'stocks' => Product::sum('stock'),
             'orders' => Order::with('lists.product','lists.status','status','supplier.supplier')->where('status_id',4)->get(),
             'sales' =>  Sale::with('lists.product','lists.package','lists.status','payment','discounted','customer','status')->orderBy('id','desc')->limit(5)->get(),
-            'active_discounts' => Discount::with('type','subtype','based')->where('is_active',1)->where('type_id',16)->get()
+            'active_discounts' => Discount::with('type','subtype','based')->where('is_active',1)->where('type_id',16)->get(),
         ]);
     }
 }

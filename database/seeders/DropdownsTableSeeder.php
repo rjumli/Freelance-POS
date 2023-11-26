@@ -217,7 +217,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Sale',
                 'color' => 'bg-warning',
-                'others' => 'n/a',
+                'others' => 'text-warning',
             ),
             22 => 
             array (
@@ -226,7 +226,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Sale',
                 'color' => 'bg-success',
-                'others' => 'n/a',
+                'others' => 'text-success',
             ),
             23 => 
             array (
@@ -235,7 +235,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Sale',
                 'color' => 'bg-danger',
-                'others' => 'n/a',
+                'others' => 'text-danger',
             ),
             24 => 
             array (
@@ -244,7 +244,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Salelist',
                 'color' => 'bg-warning',
-                'others' => 'n/a',
+                'others' => 'text-warning',
             ),
             25 => 
             array (
@@ -253,7 +253,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Salelist',
                 'color' => 'bg-success',
-                'others' => 'n/a',
+                'others' => 'text-success',
             ),
             26 => 
             array (
@@ -262,7 +262,7 @@ class DropdownsTableSeeder extends Seeder
                 'classification' => 'Status',
                 'type' => 'Salelist',
                 'color' => 'bg-danger',
-                'others' => 'n/a',
+                'others' => 'text-danger',
             ),
         ));
         
