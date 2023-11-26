@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('type_id')->references('id')->on('dropdowns')->onDelete('cascade');
             $table->tinyInteger('subtype_id')->unsigned()->index();
             $table->foreign('subtype_id')->references('id')->on('dropdowns')->onDelete('cascade');
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(0);
             $table->timestamps();
         });
     }

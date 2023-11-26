@@ -121,7 +121,7 @@
                     </div>
                     <div class="col-md-12 mt-2">
                         <multiselect v-model="discount" id="ajax" label="name" track-by="id"
-                            placeholder="Select Discount" open-direction="bottom" :options="discounts"
+                            placeholder="Select Discount" open-direction="bottom" :options="discount_lists"
                             :allow-empty="false"
                             :show-labels="false">
                         </multiselect> 
@@ -228,6 +228,10 @@ export default {
             this.payment = p[0];
             return p;
         },
+        discount_lists(){
+            // return this.discounts.filter(x => x.based_id == 12).filter(x => x.type_id == 15);
+            return this.discounts.filter(x => x.is_active == 1);
+        }
     },
     methods: {
         create(){

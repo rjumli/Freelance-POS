@@ -80,7 +80,7 @@
             <Sales :sales="sales" ref="sales"/>
         </b-col>
         <b-col xxl="4" lg="6">
-            <Discount />
+            <Discount :discounts="active_discounts" />
         </b-col>
         <b-col xxl="4" lg="6">
             <Order :suppliers="suppliers" :products="products" :units="units" :dropdowns="dropdowns" :orders="orders"/>
@@ -94,7 +94,7 @@ import Order from './Order.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
     components: { PageHeader, Order, Sales, Discount },
-    props: ['revenue','customer_count','stocks','orders','dropdowns','units','suppliers','products','sales'],
+    props: ['revenue','customer_count','stocks','orders','dropdowns','units','suppliers','products','sales','active_discounts'],
     data() {
         return {
             title: "Dashboard",

@@ -55,7 +55,7 @@
                             <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
                                 <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list me-1 w-xs">EDIT</b-button>
-                                <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
+                                <b-button v-if="(list.type.name == 'Limited')" @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
                             </td>
                         </tr>
                     </tbody>
