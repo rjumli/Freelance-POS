@@ -22,15 +22,15 @@ class DiscountController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'name' => 'required|unique:discounts,name,'.$request->id,
-            'value' => 'required|integer',
-            'based_id' => 'required',
-            'type_id' => 'required',
-            'subtype_id' => 'required',
+            'name' => 'sometimes|required|unique:discounts,name,'.$request->id,
+            'value' => 'sometimes|required|integer',
+            'based_id' => 'sometimes|required',
+            'type_id' => 'sometimes|required',
+            'subtype_id' => 'sometimes|required',
         ]);
 
         $data = \DB::transaction(function () use ($request){
-            if($request->editable){
+            if($request->editable == 'true'){
                 $data = Discount::where('id',$request->id)->first();
                 $data->update($request->except('editable'));
                 return $data;
@@ -54,7 +54,7 @@ class DiscountController extends Controller
                 $query->where('name', 'LIKE', '%'.$keyword.'%');
             })
             ->with('type','subtype','based')
-            ->orderBy('id','asc')
+            ->orderBy('id','desc')
             ->paginate(10)
             ->withQueryString()
         );

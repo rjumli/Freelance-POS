@@ -55,7 +55,7 @@
                             <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
                                 <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit" size="sm" class="edit-list me-1 w-xs">EDIT</b-button>
-                                <b-button v-if="(list.type.name == 'Limited')" @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
+                                <b-button v-if="(list.type.name == 'Limited')" @click="update(list)" variant="soft-primary" v-b-tooltip.hover title="Update Status" size="sm" class="edit-list me-1 w-xs">UPDATE</b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -65,13 +65,15 @@
         </b-col>
     </b-row>
     <Create :dropdowns="dropdowns" @message="fetch()" ref="create"/>
+    <Update ref="update" @message="fetch()"/>
 </template>
 <script>
+import Update from './Update.vue';
 import Create from './Create.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { PageHeader, Pagination, Create },
+    components: { PageHeader, Pagination, Create, Update },
     props: ['dropdowns'],
     data() {
         return {
@@ -115,6 +117,9 @@ export default {
         },
         edit(data){
             this.$refs.create.edit(data);
+        },
+        update(data){
+            this.$refs.update.set(data);
         },
         formatMoney(value) {
             let val = (value/1).toFixed(2).replace(',', '.')

@@ -10,7 +10,7 @@ class Discount extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','name','value','from','to','type_id','subtype_id','based_id'
+        'id','name','value','from','to','type_id','subtype_id','based_id','is_active'
     ];
 
     public function based()
