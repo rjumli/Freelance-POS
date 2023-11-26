@@ -55,21 +55,15 @@
                     </div>
                 </b-col>
                 <b-col xl="12">
-                <b-card no-body>
-                    <b-card-body style="height: 400px">
-                        
-                       
-
-                      
-
-                    </b-card-body>
+                <b-card no-body style="height: 400px;">
+                    <Graph />
                 </b-card>
             </b-col>
             </b-row>
         </b-col>
 
         <b-col xxl="4">
-            <b-card no-body>
+            <b-card no-body >
                 <b-card-body style="height: 504px">
 
                 </b-card-body>
@@ -88,12 +82,13 @@
     </b-row>
 </template>
 <script>
+import Graph from './Graph.vue';
 import Discount from './Discount.vue';
 import Sales from './Sales.vue';
 import Order from './Order.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
-    components: { PageHeader, Order, Sales, Discount },
+    components: { PageHeader, Order, Sales, Discount, Graph },
     props: ['revenue','customer_count','stocks','orders','dropdowns','units','suppliers','products','sales','active_discounts'],
     data() {
         return {

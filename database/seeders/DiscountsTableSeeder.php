@@ -75,6 +75,34 @@ class DiscountsTableSeeder extends Seeder
                 'created_at' => '2023-11-25 00:41:11',
                 'updated_at' => '2023-11-25 00:41:11',
             ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'New Year Sale',
+                'value' => '10',
+                'from' => NULL,
+                'to' => NULL,
+                'based_id' => 14,
+                'type_id' => 16,
+                'subtype_id' => 18,
+                'is_active' => 0,
+                'created_at' => '2023-11-26 21:16:34',
+                'updated_at' => '2023-11-26 22:25:15',
+            ),
+            5 => 
+            array (
+                'id' => 6,
+                'name' => '20% Sale',
+                'value' => '20',
+                'from' => NULL,
+                'to' => NULL,
+                'based_id' => 13,
+                'type_id' => 16,
+                'subtype_id' => 18,
+                'is_active' => 0,
+                'created_at' => '2023-11-26 22:26:53',
+                'updated_at' => '2023-11-26 22:26:53',
+            ),
         ));
         
         
