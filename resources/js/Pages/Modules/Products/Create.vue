@@ -130,11 +130,17 @@ export default {
             });
         },
         hide(){
-            this.customers = {
+            this.product = {
                 id: '',
                 name: '',
-                contact: '',
-                email: '',
+                brand: '',
+                stock: '',
+                information: '',
+                category: '',
+                pricing: '',
+                price: '',
+                size: '',
+                unit: this.units[12]
             };
             this.$emit('message',true);
             this.showModal = false;

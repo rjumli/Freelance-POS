@@ -8,56 +8,99 @@
                         <div class="card-body">
                             <div class="input-group mb-1">
                                 <span class="input-group-text"> <i class="ri-search-line search-icon"></i></span>
-                                <input type="text" v-model="keyword" placeholder="Search Code/Name" class="form-control" autofocus>
+                                <input type="text" v-model="keyword" placeholder="Search Code" class="form-control" autofocus>
+                                <b-button @click="openSearch()" type="button" variant="primary">
+                                    <i class="ri-search-eye-line align-bottom me-1"></i> Search Item
+                                </b-button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <b-card no-body class="product">
-                        <div class="card-header align-items-center d-flex">
-                            <h5 class="card-title mb-0 flex-grow-1">CART ({{lists.length}} items)</h5>
+                        <div class="card-header align-items-center d-flex" v-if="show == false">
+                            <h5 class="card-title mb-0 flex-grow-1">CART ({{items.length}} items)</h5>
                             <div class="flex-shrink-0">
                                 <div class="form-check form-switch form-switch-right form-switch-md">
-                                    <label for="ribbons01-showcode" class="form-label text-muted">Show Code</label>
-                                    <input class="form-check-input code-switcher" type="checkbox" id="ribbons01-showcode">
+                                    <label for="ribbons01-showcode" class="form-label text-muted">Show Sales</label>
+                                    <input class="form-check-input code-switcher" type="checkbox" v-model="show" id="ribbons01-showcode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-header align-items-center d-flex" v-else>
+                            <h5 class="card-title mb-0 flex-grow-1">List Sales</h5>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch form-switch-right form-switch-md">
+                                    <label for="ribbons01-showcode" class="form-label text-muted">Show Sales</label>
+                                    <input class="form-check-input code-switcher" type="checkbox" v-model="show" id="ribbons01-showcode">
                                 </div>
                             </div>
                         </div>
                         <b-card-body class="card ribbon-box border shadow-none mb-lg-0" style="height: calc(100vh - 340px); overflow: auto;">
-                            <table class="table table-bordered align-middle">
-                                <thead class="table-light fs-11">
-                                    <tr>
-                                        <th class="text-center" width="5%">#</th>
-                                        <th width="52%">Items</th>
-                                        <th class="text-center" width="12%">Quantity</th>
-                                        <th class="text-center" width="13%">Price</th>
-                                        <th class="text-center" width="13%">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="product  align-items-center">
-                                    <tr class="fs-12" v-for="(list, index) in lists" v-bind:key="'a-'+index">
-                                        <td class="text-center align-middle">
-                                            <button @click="removeItem(index)" class="btn btn-soft-danger edit-list btn-sm" type="button">
-                                                <div class="btn-content"><i class="ri-delete-bin-5-line align-bottom"></i></div>
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <h6 class="mb-0">{{list.name}} - <span :class="list.type == 'Package' ? 'text-danger' : ''">{{ list.brand }}</span></h6>
-                                            <p class="text-muted mb-0">{{list.code}}</p>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="input-step">
-                                                <button @click="minus(index)" type="button">–</button>
-                                                <input type="number" class="product-quantity" v-model="list.quantity" min="1" :max="list.stock" />
-                                                <button @click="plus(index)" type="button" class="plus">+</button>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">{{formatMoney(list.price) }}</td>
-                                        <td class="text-center">{{formatMoney(check(list.quantity,list.price,index))}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive" v-if="show == false">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light fs-11">
+                                        <tr>
+                                            <th class="text-center" width="5%">#</th>
+                                            <th width="52%">Items</th>
+                                            <th class="text-center" width="12%">Quantity</th>
+                                            <th class="text-center" width="13%">Price</th>
+                                            <th class="text-center" width="13%">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="product  align-items-center">
+                                        <tr class="fs-12" v-for="(list, index) in items" v-bind:key="'a-'+index">
+                                            <td class="text-center align-middle">
+                                                <button @click="removeItem(index)" class="btn btn-soft-danger edit-list btn-sm" type="button">
+                                                    <div class="btn-content"><i class="ri-delete-bin-5-line align-bottom"></i></div>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <h6 class="mb-0">{{list.name}} - <span :class="list.type == 'Package' ? 'text-danger' : ''">{{ list.brand }}</span></h6>
+                                                <p class="text-muted mb-0">{{list.code}}</p>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="input-step">
+                                                    <button @click="minus(index)" type="button">–</button>
+                                                    <input type="number" class="product-quantity" v-model="list.quantity" min="1" :max="list.stock" />
+                                                    <button @click="plus(index)" type="button" class="plus">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{formatMoney(list.price) }}</td>
+                                            <td class="text-center">{{formatMoney(check(list.quantity,list.price,index))}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive" v-else>
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light fs-11">
+                                        <tr>
+                                            <th class="text-center" width="15%">#</th>
+                                            <th class="text-center" width="25%" >Customer</th>
+                                            <th class="text-center" width="15%">Subtotal</th>
+                                            <th class="text-center" width="15%">Discount</th>
+                                            <th class="text-center" width="15%">Tax</th>
+                                            <th class="text-center" width="15%">Total</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="product  align-items-center">
+                                        <tr class="fs-12" v-for="(list, index) in lists" v-bind:key="'a-'+index">
+                                            <td class="text-center">{{list.code}}</td>
+                                            <td class="text-center">{{list.customer.name}}</td>
+                                            <td class="text-center">{{formatMoney(list.subtotal) }}</td>
+                                            <td class="text-center">{{formatMoney(list.discount) }}</td>
+                                            <td class="text-center">{{formatMoney(list.tax)}}</td>
+                                            <td class="text-center">{{formatMoney(list.total)}}</td>
+                                            <td  class="text-center">
+                                                <b-button @click="openView(list)" variant="soft-primary" v-b-tooltip.hover title="View Product" size="sm" class="edit-list me-1 w-xs">View</b-button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <Pagination class="ms-2 me-2" v-if="meta" @fetch="fetch" :lists="lists.length" :links="links" :pagination="meta" />
+                            </div>
                         </b-card-body>
                     </b-card>
                 </div>
@@ -124,25 +167,39 @@
             </div>
         </div>
     </div>
+    <Confirm @clear="clearForm" ref="confirm"/>
     <Nothing ref="nothing"/>
+    <Search :categories="categories" @add="addItem" ref="search"/>
+    <View ref="view"/>
 </template>
 <script>
+import Confirm from './Confirm.vue';
+import Search from './Search.vue';
 import Nothing from './Nothing.vue';
+import View from './View.vue';
 import Multiselect from '@suadelabs/vue3-multiselect';
+import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components : { Multiselect, Nothing },
+    components : { Pagination,Multiselect, Nothing, Search, Confirm, View },
     props: ['categories','suppliers','units','dropdowns','customers','discounts'],
     data() {
         return {
-            lists: [],
+            items: [],
             keyword: '',
             value: 1,
             form: {},
             customer: '',
             payment: '',
             discount: this.discounts[0],
-            discounted : 0
+            discounted : 0,
+            show: false,
+            lists: [],
+            meta: {},
+            links: {},
         };
+    },
+    created(){
+        this.fetchLists();
     },
     watch: {
         keyword(newVal){
@@ -158,7 +215,7 @@ export default {
     },
     computed: {
         subtotal() {
-            return this.lists.reduce((total, item) => total + item.total, 0);
+            return this.items.reduce((total, item) => total + item.total, 0);
         },
         tax() {
             return this.subtotal * 0.12;
@@ -174,24 +231,18 @@ export default {
     },
     methods: {
         create(){
-            this.form = this.$inertia.form({
-                customer_id: (this.customer) ? this.customer.id : '', 
-                payment_id: (this.payment) ? this.payment.id : '', 
-                discount_id: (this.discount) ? this.discount.id : '', 
-                discount: this.discounted,
-                tax: this.tax,
-                subtotal: this.subtotal,
-                total: this.total,
-                status_id: 23,
-                lists: this.lists
-            })
+            // let data = new FormData();
+            // data.append('customer_id', (this.customer.id != undefined) ? this.customer.id : '');
+            // data.append('discount_id', (this.discount.id != undefined) ? this.discount.id : '');
+            // data.append('payment_id', (this.payment.id != undefined) ? this.payment.id : '');
+            // data.append('discounted', this.discounted);
+            // data.append('subtotal', this.subtotal);
+            // data.append('tax', this.tax);
+            // data.append('total', this.total);
+            // data.append('status_id', 23);
+            // data.append('lists', (this.lists.length != 0) ? JSON.stringify(this.lists) : '');
 
-            this.form.post('/sales',{
-                preserveScroll: true,
-                onSuccess: (response) => {
-                    this.hide();
-                },
-            });
+            this.$refs.confirm.set(this.items,this.customer,this.payment,this.discount,this.subtotal,this.discounted,this.tax,this.total);
         },
         checkSearchStr: _.debounce(function(string) {
             this.fetch();
@@ -212,7 +263,7 @@ export default {
                         const itemCode = response.data.data.code;
                         if (!this.itemExists(itemCode)) {
                             response.data.data.quantity = 1;
-                            this.lists.unshift(response.data.data);
+                            this.items.unshift(response.data.data);
                         }
                     }
                     this.keyword = '';
@@ -220,31 +271,47 @@ export default {
             })
             .catch(err => console.log(err));
         },
+        fetchLists(page_url) {
+            page_url = page_url || '/sales';
+            axios.get(page_url, {
+                params: {
+                    keyword: (this.keyword) ? this.keyword : '',
+                    options: 'lists',
+                    category:  (this.category) ? this.category : '',
+                }
+            })
+            .then(response => {
+                this.lists = response.data.data;
+                this.meta = response.data.meta;
+                this.links = response.data.links;
+            })
+            .catch(err => console.log(err));
+        },
         itemExists(itemCode) {
-            return this.lists.some(item => item.code === itemCode);
+            return this.items.some(item => item.code === itemCode);
         },
         formatMoney(value) {
             let val = (value/1).toFixed(2).replace(',', '.')
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         },
         plus(index){
-            if(this.lists[index].quantity < this.lists[index].stock){
-                this.lists[index].quantity++;
+            if(this.items[index].quantity < this.items[index].stock){
+                this.items[index].quantity++;
             }
         },
         minus(index){
-            if(this.lists[index].quantity > 1){
-                this.lists[index].quantity--;
+            if(this.items[index].quantity > 1){
+                this.items[index].quantity--;
             }
         },
         removeItem(index){
             if (window.confirm('Are you sure you want to remove this item?')) {
-                this.lists.splice(index, 1);
+                this.items.splice(index, 1);
             }
         },
         check(quantity,price,index){
-            this.lists[index].total = quantity * price;
-            return this.lists[index].total;
+            this.items[index].total = quantity * price;
+            return this.items[index].total;
         },
         calculatePercent(val){
             let percent = val/100
@@ -252,7 +319,24 @@ export default {
         },
         hide(){
             this.customer = '';
-            this.lists = [];
+            this.items = [];
+        },
+        openSearch(){
+            this.$refs.search.show();
+        },
+        addItem(item){
+            const itemCode = item.code;
+            if (!this.itemExists(itemCode)) {
+                item.quantity = 1;
+                this.items.unshift(item);
+            }
+        },
+        clearForm(){
+            this.items = [];
+            this.customer = '';
+        },
+        openView(data){
+            this.$refs.view.show(data);
         }
     }
 }

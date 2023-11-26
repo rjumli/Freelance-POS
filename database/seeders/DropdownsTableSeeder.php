@@ -210,6 +210,24 @@ class DropdownsTableSeeder extends Seeder
                 'color' => 'n/a',
                 'others' => 'n/a',
             ),
+            21 => 
+            array (
+                'id' => 23,
+                'name' => 'Sold',
+                'classification' => 'Status',
+                'type' => 'Payment',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
+            22 => 
+            array (
+                'id' => 24,
+                'name' => 'Returned',
+                'classification' => 'Status',
+                'type' => 'Payment',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
         ));
         
         

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Order;
+use App\Models\Sale;
 use App\Models\Unit;
 use App\Models\Discount;
 use App\Models\Dropdown;
@@ -38,7 +40,12 @@ class HandleInertiaRequests extends Middleware
             'dropdowns' => Dropdown::all(),
             'products' => Product::all(),
             'customers' => Customer::all(),
-            'discounts' => Discount::all()
+            'discounts' => Discount::all(),
+            'revenue' => Sale::sum('total'),
+            'customer_count' => Customer::count(),
+            'stocks' => Product::sum('stock'),
+            'orders' => Order::with('lists.product','lists.status','status','supplier.supplier')->where('status_id',4)->get(),
+            'sales' =>  Sale::with('lists.product','lists.package','lists.status','payment','discounted','customer','status')->orderBy('id','desc')->limit(5)->get()
         ]);
     }
 }

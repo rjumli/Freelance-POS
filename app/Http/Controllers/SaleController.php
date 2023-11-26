@@ -19,6 +19,9 @@ class SaleController extends Controller
             case 'lists':
                return $this->lists($request->all());
             break;
+            case 'search':
+                return $this->search($request->all());
+             break;
             case 'cart':
                 return $this->cart($request->all());
              break;
@@ -52,7 +55,7 @@ class SaleController extends Controller
                         $l->price = $list['price'];
                         $l->quantity = $list['quantity'];
                         $l->total = $list['total'];
-                        $l->status_id = 26;
+                        $l->status_id = 27;
                         $l->type = $list['type'];
                         if($list['type'] == 'Product'){
                             $l->product_id = $list['id'];
@@ -99,6 +102,50 @@ class SaleController extends Controller
     }
 
     public function lists($request){
+        $keyword = $request['keyword'];
+        $data = DefaultResource::collection(
+            Sale::when($keyword, function ($query, $keyword) {
+                $query->where('code', 'LIKE', '%'.$keyword.'%');
+            })
+            ->with('lists.product','lists.package','lists.status','payment','discounted','customer','status')
+            ->orderBy('id','desc')
+            ->paginate(10)
+            ->withQueryString()
+        );
+        return $data;
+    }
 
+    public function search($request){
+        $keyword = $request['keyword'];
+        $category = $request['category'];
+        $data = Product::with('category','unit','pricing')
+        ->when($keyword, function ($query, $keyword) {
+            $query->where('name', 'LIKE', '%'.$keyword.'%');
+        })
+        ->when($category, function ($query, $category) {
+            $query->where('category_id',$category);
+        })
+        ->paginate(5)
+        ->withQueryString();
+
+        if(count($data) > 0){
+            return ProductResource::collection($data);
+        }else{
+            $data = Package::with('lists.product','category')
+            ->when($keyword, function ($query, $keyword) {
+                $query->where('name', 'LIKE', '%'.$keyword.'%');
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category_id',$category);
+            })
+            ->paginate(5)
+            ->withQueryString();
+
+            if(isset($data)){
+                return PackageResource::collection($data);
+            }else{
+                return ProductResource::collection($data);
+            }
+        } 
     }
 }

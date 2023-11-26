@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Package;
 use App\Models\PackageList;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class PackageController extends Controller
                 $data->update($request->except('editable'));
                 return $data;
             }else{
-                $total = 0;
+                $total = 0; $items = [];
                 $code = 'PCKG'.date('Y').date('m').date('d')."-".str_pad((Package::count()+1), 4, '0', STR_PAD_LEFT);  
                 $lists = $request->lists;
             
@@ -48,21 +49,57 @@ class PackageController extends Controller
                     $total = $total + ($list['price'] * $list['quantity']);
                 }
 
+                // foreach($lists as $list){
+                //     $id = $list['product']['id'];
+                //     $quantityToSubtract = $list['quantity'] * $request->stock;
+                //     $product = Product::where('id',$id)->first();
+                //     if($product->stock >= $quantityToSubtract){
+                    
+                //     }else{
+                //         $items[] = [
+                //             'product' => $product->name,
+                //             'stock' => $product->stock,
+                //             'order' =>   $quantityToSubtract
+                //         ];
+                //     }
+                // }
+
+                // if(count($items) > 0){
+                //   return [
+                //     'items' => $items,
+                //     'type' => 'error'
+                //   ];
+                // }
+
                 $data = Package::create(array_merge($request->all(),['code' => $code, 'total' => $total]));
                 if($data){
                     foreach($lists as $list){
+                        $id = $list['product']['id'];
                         $package = new PackageList;
                         $package->package_id = $data->id;
                         $package->product_id = $list['product']['id'];
                         $package->price = $list['price'];
                         $package->quantity = $list['quantity'];
                         $package->total = $list['quantity']*$list['price'];
-                        $package->save();
+                        if($package->save()){
+                            $quantityToSubtract = $list['quantity'] * $request->stock;
+                            $product = Product::where('id',$id)->decrement('stock', $quantityToSubtract);
+                        }
                     }
                 }
             }
             
         });
+        
+        
+        // if(count($data['items']) > 0){
+            return back()->with([
+                'message' => 'Sale was successfull',
+                'data' => $data,
+                'type' => 'ri-checkbox-circle-fill',
+                'color' => 'success'
+            ]); 
+        // }
     }
 
     public function lists($request){

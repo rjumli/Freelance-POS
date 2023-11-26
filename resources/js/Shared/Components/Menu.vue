@@ -73,9 +73,9 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Maintenance') }" href="/maintenance">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Settings') }" href="/settings">
                         <i class='ri ri-settings-4-fill'></i>
-                        <span data-key="t-dashboards">Maintenance</span>
+                        <span data-key="t-dashboards">Settings</span>
                     </Link>
                 </li>
                 <li class="nav-item">

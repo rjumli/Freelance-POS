@@ -17,7 +17,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id');
             $table->string('name',100);
-            $table->string('type',100);
+            $table->boolean('is_active')->default(1);
         });
     }
 

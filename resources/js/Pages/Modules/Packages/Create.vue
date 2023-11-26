@@ -85,11 +85,11 @@
                                     <td class="text-center" width="35%">
                                         <select @change="check('product',index)" :style="(form.errors && form.errors[`lists.${index}.product`]) ? 'color: red':''" v-model="list.product" class="form-select form-select-sm mt-n1">
                                             <option :value="null" disabled>Select Product</option>
-                                            <option :value="product" v-for="(product,index) in products" v-bind:key="index" :disabled="isTypeSelected(product.id)">{{product.name}} - {{product.brand}}</option>
+                                            <option :value="product" v-for="(product,index) in products_list" v-bind:key="index" :disabled="isTypeSelected(product.id)">{{product.name}} - {{product.brand}}</option>
                                         </select>
                                     </td>
                                     <td class="text-center" width="10%">
-                                        <input min="1" v-bind:max="package.lists[index].product.stock" @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="number" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
+                                        <input min="1" v-bind:max="(package.lists[index].product) ? package.lists[index].product.stock : 0" @change="check('quantity',index)" :style="(form.errors && form.errors[`lists.${index}.quantity`]) ? 'color: red':''" type="number" class="form-control form-control-sm text-center" v-model="list.quantity" placeholder="Quantity" required>
                                     </td>
                                     <td class="text-center" width="15%">
                                         <input type="text" readonly class="form-control form-control-sm text-center" :value="formatMoney(package.lists[index].current)" placeholder="Amount" required>
@@ -132,15 +132,19 @@ export default {
                 information: '',
                 price: 0,
                 tempprice: 0,
-                lists: [{product: { stock: 0}, current:0 ,quantity:0, price:0, total: 0}]
+                lists: [{product: null, current:0 ,quantity:0, price:0, total: 0}]
             },
+            hold: [],
             form: {},
             editable: false,
         }
     },
     computed: {
         categories_list : function() {
-            return this.categories.filter(x => x.type == 'Package');
+            return this.categories.filter(x => x.type == 'Product');
+        },
+       products_list : function() {
+            return this.products.filter(x => x.stock != 0).filter(x => x.category_id == this.package.category.id);
         },
     },
     watch : {
@@ -177,11 +181,15 @@ export default {
             });
         },
         hide(){
-            this.customers = {
+            this.package = {
                 id: '',
                 name: '',
-                contact: '',
-                email: '',
+                category: '',
+                quantity: 0,
+                information: '',
+                price: 0,
+                tempprice: 0,
+                lists: [{product: null, current:0 ,quantity:0, price:0, total: 0}]
             };
             this.$emit('message',true);
             this.showModal = false;

@@ -33,6 +33,21 @@ class Product extends Model
         return $this->hasMany('App\Models\OrderList', 'product_id')->orderBy('created_at','DESC');
     } 
 
+    public function sales()
+    {
+        return $this->hasMany('App\Models\SaleList', 'product_id')->orderBy('created_at','DESC');
+    } 
+
+    public function total()
+    {
+        return $this->hasMany('App\Models\SaleList', 'product_id')->sum('total');
+    } 
+
+    public function quantities()
+    {
+        return $this->hasMany('App\Models\SaleList', 'product_id')->sum('quantity');
+    } 
+
 
     // public function lists()
     // {

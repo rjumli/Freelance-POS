@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Rules\UniqueNameBrandCombination;
 use App\Http\Resources\DefaultResource;
+use App\Http\Resources\ItemResource;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -50,7 +51,7 @@ class ProductController extends Controller
         $category = $request['category'];
         $keyword = $request['keyword'];
 
-        $data = DefaultResource::collection(
+        $data = ItemResource::collection(
             Product::when($keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', '%'.$keyword.'%');
             })
@@ -59,7 +60,7 @@ class ProductController extends Controller
                     $query->where('id',$category);
                 });
             })
-            ->with('category','orders.status')
+            ->with('category','orders.status','sales')
             ->orderBy('id','asc')
             ->paginate(10)
             ->withQueryString()

@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="text-muted fs-11 mb-1">Orders :</p>
-                                        <h5 class="mb-0 fs-13">2,234</h5>
+                                        <h5 class="mb-0 fs-13">{{product.quantities}}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <p class="text-muted fs-11 mb-1">Revenue :</p>
-                                        <h5 class="mb-0 fs-13">$60,645</h5>
+                                        <h5 class="mb-0 fs-13">{{formatMoney(product.total)}}</h5>
                                     </div>
                                 </div>
                             </div>

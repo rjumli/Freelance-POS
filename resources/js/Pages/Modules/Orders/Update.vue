@@ -35,6 +35,7 @@
                     <div class="form-group">
                         <label>Price:<span v-if="form.errors" v-text="form.errors.price" class="haveerror"></span></label>
                         <input type="text" class="form-control" v-model="price">
+                        <!-- <Amount class="text-center" @amount="handleAmount" :size="'form-control'" ref="testing" :readonly="false"/> -->
                     </div>
                 </div>
             </div>
@@ -46,9 +47,10 @@
     </b-modal>
 </template>
 <script>
+import Amount from "@/Shared/Components/Amount.vue";
 import Multiselect from '@suadelabs/vue3-multiselect';
 export default {
-    components: { Multiselect },
+    components: { Multiselect, Amount },
     props: ['dropdowns'],
     data(){
         return {
@@ -70,7 +72,12 @@ export default {
         show(data,id) {
             this.id = id;
             this.product = data;
+            this.quantity = this.product.quantity;
+            this.price = this.product.price;
             this.showModal = true;
+        },
+        handleAmount(val){
+            this.price = this.product.price.replace('₱ ', '').replace(/,/g, '');
         },
         create(){
             this.form = this.$inertia.form({

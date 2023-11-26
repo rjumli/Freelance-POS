@@ -6,14 +6,24 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ItemResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'brand' => $this->brand,
+            'stock' => $this->stock,
+            'reorder' => $this->reorder,
+            'information' => $this->information,
+            'price' => $this->price,
+            'size' => $this->size,
+            'category' => $this->category,
+            'unit' => $this->unit,
+            'pricing' => $this->pricing,
+            'created_at' => $this->created_at,
+            'total' => $this->total(),
+            'quantities' => $this->quantities(),
+        ];
     }
 }
