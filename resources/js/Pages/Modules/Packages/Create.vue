@@ -141,7 +141,7 @@ export default {
     },
     computed: {
         categories_list : function() {
-            return this.categories.filter(x => x.type == 'Product');
+            return this.categories.filter(x => x.is_active == 1);
         },
        products_list : function() {
             return this.products.filter(x => x.stock != 0).filter(x => x.category_id == this.package.category.id);

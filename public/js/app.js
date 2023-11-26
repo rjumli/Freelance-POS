@@ -1505,7 +1505,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     categories_list: function categories_list() {
       return this.categories.filter(function (x) {
-        return x.type == 'Product';
+        return x.is_active == 1;
       });
     },
     products_list: function products_list() {
