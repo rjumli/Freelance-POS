@@ -213,19 +213,55 @@ class DropdownsTableSeeder extends Seeder
             21 => 
             array (
                 'id' => 23,
-                'name' => 'Sold',
+                'name' => 'Pending',
                 'classification' => 'Status',
-                'type' => 'Payment',
-                'color' => 'n/a',
+                'type' => 'Sale',
+                'color' => 'bg-warning',
                 'others' => 'n/a',
             ),
             22 => 
             array (
                 'id' => 24,
+                'name' => 'Completed',
+                'classification' => 'Status',
+                'type' => 'Sale',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            23 => 
+            array (
+                'id' => 25,
+                'name' => 'Cancelled',
+                'classification' => 'Status',
+                'type' => 'Sale',
+                'color' => 'bg-danger',
+                'others' => 'n/a',
+            ),
+            24 => 
+            array (
+                'id' => 26,
+                'name' => 'Pending',
+                'classification' => 'Status',
+                'type' => 'Salelist',
+                'color' => 'bg-warning',
+                'others' => 'n/a',
+            ),
+            25 => 
+            array (
+                'id' => 27,
+                'name' => 'Sold',
+                'classification' => 'Status',
+                'type' => 'Salelist',
+                'color' => 'bg-success',
+                'others' => 'n/a',
+            ),
+            26 => 
+            array (
+                'id' => 28,
                 'name' => 'Returned',
                 'classification' => 'Status',
-                'type' => 'Payment',
-                'color' => 'n/a',
+                'type' => 'Salelist',
+                'color' => 'bg-danger',
                 'others' => 'n/a',
             ),
         ));
