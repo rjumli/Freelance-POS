@@ -70,7 +70,6 @@
                                     v-model:value="start"
                                     type="date" format="YYYY-MM-DD"
                                     lang="en"
-                                    :disabled-date="disabledDate"
                                     placeholder="Select Date"
                                     >
                                 </date-picker>
@@ -81,9 +80,10 @@
                                     v-model:value="end"
                                     type="date" format="YYYY-MM-DD"
                                     lang="en"
-                                    :disabled-date="disabledDate"
                                     placeholder="Select Date"
                                     >
+                                    
+                                    <!-- :disabled-date="disabledDate" -->
                                 </date-picker>
                             </div>
                         </div>
@@ -243,9 +243,9 @@ export default {
                 }
             });
         },
-        disabledDate(date) {
-            return date <= new Date();
-        },
+        // disabledDate(date) {
+        //     return date <= new Date();
+        // },
     }
 }
 </script>

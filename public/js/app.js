@@ -935,10 +935,9 @@ __webpack_require__.r(__webpack_exports__);
           searchOptions.classList.add("d-none");
         }
       });
-    },
-    disabledDate: function disabledDate(date) {
-      return date <= new Date();
-    }
+    } // disabledDate(date) {
+    //     return date <= new Date();
+    // },
   }
 });
 
@@ -6453,9 +6452,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "date",
             format: "YYYY-MM-DD",
             lang: "en",
-            "disabled-date": $options.disabledDate,
             placeholder: "Select Date"
-          }, null, 8 /* PROPS */, ["value", "disabled-date"])], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.type.name == 'Date Range' && $data.type != '' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End: "), $data.form.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+          }, null, 8 /* PROPS */, ["value"])], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.type.name == 'Date Range' && $data.type != '' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End: "), $data.form.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
             key: 0,
             textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.end),
             "class": "haveerror"
@@ -6467,9 +6465,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "date",
             format: "YYYY-MM-DD",
             lang: "en",
-            "disabled-date": $options.disabledDate,
             placeholder: "Select Date"
-          }, null, 8 /* PROPS */, ["value", "disabled-date"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :disabled-date=\"disabledDate\" ")];
+            }),
+            _: 1 /* STABLE */
+          }, 8 /* PROPS */, ["value"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
         }),
         _: 1 /* STABLE */
       })];
