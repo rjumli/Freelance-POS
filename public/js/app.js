@@ -937,7 +937,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     disabledDate: function disabledDate(date) {
-      return date < new Date();
+      return date <= new Date();
     }
   }
 });

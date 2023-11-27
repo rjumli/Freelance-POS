@@ -244,7 +244,7 @@ export default {
             });
         },
         disabledDate(date) {
-            return date < new Date();
+            return date <= new Date();
         },
     }
 }
