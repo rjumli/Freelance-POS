@@ -54,6 +54,7 @@ class SaleController extends Controller
                         $l = new SaleList;
                         $l->price = $list['price'];
                         $l->quantity = $list['quantity'];
+                        $l->discount = $list['discounted'];
                         $l->total = $list['total'];
                         $l->status_id = 27;
                         $l->type = $list['type'];
@@ -88,11 +89,11 @@ class SaleController extends Controller
 
     public function cart($request){
         $keyword = $request['keyword'];
-        $data = Product::with('category','unit','pricing')->where('code',$keyword)->first();
+        $data = Product::with('category','unit','pricing','discounts.discount.subtype')->where('code',$keyword)->first();
         if(isset($data)){
             return new ProductResource($data);
         }else{
-            $data = Package::with('lists.product','category')->where('code',$keyword)->first();
+            $data = Package::with('lists.product','category','discounts.discount.subtype')->where('code',$keyword)->first();
             if(isset($data)){
                 return new PackageResource($data);
             }else{
@@ -118,7 +119,7 @@ class SaleController extends Controller
     public function search($request){
         $keyword = $request['keyword'];
         $category = $request['category'];
-        $data = Product::with('category','unit','pricing')
+        $data = Product::with('category','unit','pricing','discounts.discount.subtype')
         ->when($keyword, function ($query, $keyword) {
             $query->where('name', 'LIKE', '%'.$keyword.'%');
         })
@@ -131,7 +132,7 @@ class SaleController extends Controller
         if(count($data) > 0){
             return ProductResource::collection($data);
         }else{
-            $data = Package::with('lists.product','category')
+            $data = Package::with('lists.product','category','discounts.discount.subtype')
             ->when($keyword, function ($query, $keyword) {
                 $query->where('name', 'LIKE', '%'.$keyword.'%');
             })

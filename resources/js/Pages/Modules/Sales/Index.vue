@@ -42,9 +42,10 @@
                                     <thead class="table-light fs-11">
                                         <tr>
                                             <th class="text-center" width="5%">#</th>
-                                            <th width="52%">Items</th>
+                                            <th width="39%">Items</th>
                                             <th class="text-center" width="12%">Quantity</th>
                                             <th class="text-center" width="13%">Price</th>
+                                            <th class="text-center" width="13%">Discount</th>
                                             <th class="text-center" width="13%">Total</th>
                                         </tr>
                                     </thead>
@@ -67,6 +68,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">{{formatMoney(list.price) }}</td>
+                                            <td class="text-center">{{checkDiscount(list.discount,list.price,index) }}</td>
                                             <td class="text-center">{{formatMoney(check(list.quantity,list.price,index))}}</td>
                                         </tr>
                                     </tbody>
@@ -235,17 +237,6 @@ export default {
     },
     methods: {
         create(){
-            // let data = new FormData();
-            // data.append('customer_id', (this.customer.id != undefined) ? this.customer.id : '');
-            // data.append('discount_id', (this.discount.id != undefined) ? this.discount.id : '');
-            // data.append('payment_id', (this.payment.id != undefined) ? this.payment.id : '');
-            // data.append('discounted', this.discounted);
-            // data.append('subtotal', this.subtotal);
-            // data.append('tax', this.tax);
-            // data.append('total', this.total);
-            // data.append('status_id', 23);
-            // data.append('lists', (this.lists.length != 0) ? JSON.stringify(this.lists) : '');
-
             this.$refs.confirm.set(this.items,this.customer,this.payment,this.discount,this.subtotal,this.discounted,this.tax,this.total);
         },
         checkSearchStr: _.debounce(function(string) {
@@ -314,7 +305,8 @@ export default {
             }
         },
         check(quantity,price,index){
-            this.items[index].total = quantity * price;
+            let dis = (this.items[index].discounted) ? this.items[index].discounted : 0;
+            this.items[index].total = (quantity * price) - dis;
             return this.items[index].total;
         },
         calculatePercent(val){
@@ -336,11 +328,26 @@ export default {
             }
         },
         clearForm(){
+            this.fetchLists();
             this.items = [];
             this.customer = '';
         },
         openView(data){
             this.$refs.view.show(data);
+        },
+        checkDiscount(data,price,index){
+            let d = 0;
+            if(data == ''){
+                d = 0;
+            }else{
+                if(data.discount.subtype.name == 'Percentage'){
+                    d = (data.discount.value/100)*price;
+                }else{
+                    d = data.discount.value;
+                }
+            }
+            this.items[index].discounted = d;
+            return this.formatMoney(d);
         }
     }
 }

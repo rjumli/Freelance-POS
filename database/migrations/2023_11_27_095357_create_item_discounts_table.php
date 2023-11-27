@@ -13,22 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sale_lists', function (Blueprint $table) {
+        Schema::create('item_discounts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('quantity');
-            $table->decimal('price',12,2);
-            $table->decimal('discount',12,2)->default(0);
-            $table->decimal('total',12,2);
-            $table->string('type');
-            $table->tinyInteger('status_id')->unsigned()->index();
-            $table->foreign('status_id')->references('id')->on('dropdowns')->onDelete('cascade');
+            $table->date('start');
+            $table->date('end')->nullable();
+            $table->string('subtype');
+            $table->boolean('is_active')->default(0);
+            $table->tinyInteger('type_id')->unsigned()->index();
+            $table->foreign('type_id')->references('id')->on('dropdowns')->onDelete('cascade');
             $table->integer('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('package_id')->unsigned()->nullable();
             $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
-            $table->integer('sale_id')->unsigned()->index();
-            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+            $table->integer('discount_id')->unsigned()->index();
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -40,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_lists');
+        Schema::dropIfExists('item_discounts');
     }
 };

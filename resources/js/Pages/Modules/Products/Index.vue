@@ -25,13 +25,13 @@
                 <table class="table table-nowrap table-bordered align-middle mb-0">
                     <thead class="bg-primary">
                         <tr class="fs-13 text-light">
-                            <th style="width: 10%;" class="text-center">Code</th>
-                            <th style="width: 22%;" class="text-center">Name</th>
+                            <th style="width: 12%;" class="text-center">Code</th>
+                            <th style="width: 20%;" class="text-center">Name</th>
                             <th style="width: 15%;" class="text-center">Brand</th>
                             <th style="width: 13%;" class="text-center">Category</th>
                             <th style="width: 8%;" class="text-center">Stock</th>
-                            <th style="width: 7%;" class="text-center">Price</th>
-                            <th style="width: 13%;" class="text-center">Created At</th>
+                            <th style="width: 8%;" class="text-center">Discount</th>
+                            <th style="width: 8%;" class="text-center">Price</th>
                             <th style="width: 12%;" class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -39,17 +39,18 @@
                         <tr class="fs-12" v-for="(list,index) in lists" v-bind:key="index">
                             <td class="text-center"> {{list.code}}</td>
                             <td class="text-center">
-                                <h5 class="fs-13 mb-0 text-dark">{{list.name}}</h5>
+                                <h5 class="fs-12 mb-0">{{list.name}}</h5>
                             </td>
                             <td class="text-center"> {{list.brand}}</td>
                             <td class="text-center"> {{list.category.name}}</td>
                             <td class="text-center"> {{list.stock}}</td>
+                            <td class="text-center"> -</td>
                             <td class="text-center"> {{formatMoney(list.price)}}</td>
-                            <td class="text-center"> {{list.created_at}}</td>
                             <td class="text-center">
                                 <b-button @click="openView(list)" variant="soft-primary" v-b-tooltip.hover title="View Product" size="sm" class="edit-list me-1 w-xs">View</b-button>
                                 <!-- <b-button @click="edit(list)" variant="soft-primary" v-b-tooltip.hover title="Edit Product" size="sm" class="edit-list me-1 w-xs">Edit</b-button> -->
                                 <b-button @click="openOrder(list)" variant="soft-primary" v-b-tooltip.hover title="View Orders" size="sm" class="edit-list me-1 w-xs">Orders</b-button>
+                            
                             </td>
                         </tr>
                     </tbody>

@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\SupplierBranch;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ItemDiscount;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use App\Http\Resources\UserResource;

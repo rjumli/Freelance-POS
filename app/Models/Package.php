@@ -23,6 +23,11 @@ class Package extends Model
         return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     } 
 
+    public function discounts()
+    {
+        return $this->hasMany('App\Models\ItemDiscount', 'package_id')->where('is_active',1);
+    } 
+
     public function getUpdatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));

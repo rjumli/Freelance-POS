@@ -48,6 +48,11 @@ class Product extends Model
         return $this->hasMany('App\Models\SaleList', 'product_id')->sum('quantity');
     } 
 
+    public function discounts()
+    {
+        return $this->hasMany('App\Models\ItemDiscount', 'product_id')->where('is_active',1);
+    } 
+
 
     // public function lists()
     // {

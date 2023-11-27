@@ -166,8 +166,7 @@ class DropdownsTableSeeder extends Seeder
             16 => 
             array (
                 'id' => 18,
-                'name' => 'Percentage
-',
+                'name' => 'Percentage',
                 'classification' => 'Discount',
                 'type' => 'Subtype',
                 'color' => 'bg-success',
@@ -263,6 +262,24 @@ class DropdownsTableSeeder extends Seeder
                 'type' => 'Salelist',
                 'color' => 'bg-danger',
                 'others' => 'text-danger',
+            ),
+            27 => 
+            array (
+                'id' => 29,
+                'name' => 'Specific Date',
+                'classification' => 'Product',
+                'type' => 'Discount',
+                'color' => 'n/a',
+                'others' => 'n/a',
+            ),
+            28 => 
+            array (
+                'id' => 30,
+                'name' => 'Date Range',
+                'classification' => 'Product',
+                'type' => 'Discount',
+                'color' => 'n/a',
+                'others' => 'n/a',
             ),
         ));
         

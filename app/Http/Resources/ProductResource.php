@@ -26,6 +26,7 @@ class ProductResource extends JsonResource
             'category' => $this->category,
             'unit' => $this->unit,
             'pricing' => $this->pricing,
+            'discount' => (count($this->discounts) > 0) ? $this->discounts[0] : '',
             'created_at' => $this->created_at
         ];
     }

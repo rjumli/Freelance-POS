@@ -60,7 +60,7 @@ class ProductController extends Controller
                     $query->where('id',$category);
                 });
             })
-            ->with('category','orders.status','sales')
+            ->with('category','orders.status','sales','discounts')
             ->orderBy('id','asc')
             ->paginate(10)
             ->withQueryString()

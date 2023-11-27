@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" title="View Sale" size="lg" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+    <b-modal v-model="showModal" title="View Sale" size="xl" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <div class="col-xl-12">
             <div class="mt-xl-0 mt-5">
                 <div class="d-flex">
@@ -91,6 +91,7 @@
                                 <th width="37%">Product</th>
                                 <th class="text-center" width="10%">Quantity</th>
                                 <th class="text-center" width="13%">Price</th>
+                                <th class="text-center" width="13%">Discount</th>
                                 <th class="text-center" width="13%">Total</th>
                                 <th class="text-center" width="10%">Status</th>
                                 <th class="text-center" width="15%">Action</th>
@@ -102,7 +103,8 @@
                                 <td>{{(list.product) ? list.product.name+' - '+list.product.brand : list.package.name+' (Package)'}}</td>
                                 <td class="text-center">{{list.quantity}}</td>
                                 <td class="text-center">{{formatMoney(list.price) }}</td>
-                                <td class="text-center">{{formatMoney(list.quantity *list.price)}}</td>
+                                <td class="text-center">{{formatMoney(list.discount)}}</td>
+                                <td class="text-center">{{formatMoney(list.total)}}</td>
                                 <td class="text-center">
                                     <span :class="'badge '+list.status.color">{{list.status.name}}</span>
                                 </td>

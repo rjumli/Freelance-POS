@@ -28,6 +28,10 @@ class Discount extends Model
         return $this->belongsTo('App\Models\Dropdown', 'subtype_id', 'id');
     } 
 
+    public function products()
+    {
+        return $this->hasMany('App\Models\ProductDiscount', 'discount_id');
+    } 
 
     public function getNameAttribute($value)
     {

@@ -24,6 +24,7 @@ class ItemResource extends JsonResource
             'created_at' => $this->created_at,
             'total' => $this->total(),
             'quantities' => $this->quantities(),
+            'discount' => (count($this->discounts) > 0) ? $this->discounts[0] : ''
         ];
     }
 }

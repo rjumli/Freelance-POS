@@ -16,8 +16,11 @@ return new class extends Migration
         Schema::create('product_discounts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->dateTime('from')->nullable();
-            $table->dateTime('to')->nullable();
+            $table->date('date')->nullable();
+            $table->string('days');
+            $table->boolean('is_active')->default(0);
+            $table->tinyInteger('type_id')->unsigned()->index();
+            $table->foreign('type_id')->references('id')->on('dropdowns')->onDelete('cascade');
             $table->integer('product_id')->unsigned()->index();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('discount_id')->unsigned()->index();
