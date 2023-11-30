@@ -57,7 +57,7 @@ export default {
         },
         create(){
             this.form = this.$inertia.form({
-                id: this.id,
+                id: this.customer.id,
                 name: this.customer.name,
                 contact: this.customer.contact,
                 email: this.customer.email,
