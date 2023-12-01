@@ -8,7 +8,6 @@
                 <div class="col-sm-6">
                     <div class="text-sm-end d-none d-sm-block">
                         Developed by Genpos8
-                        <!-- Developed by <a href="" target="_blank"><i class="mdi mdi-emoticon-lol text-danger"></i></a> -->
                     </div>
                 </div>
             </div>
